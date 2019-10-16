@@ -8,42 +8,42 @@ App.organization_id = undefined;
 
 // Global Event Bus to fire and listen to events
 App.Events = {
-    emit: function(event_name, event_payload) {
+    emit: function (event_name, event_payload) {
         $("body").trigger(event_name, event_payload);
     },
-    listen: function(event_name, callback) {
+    listen: function (event_name, callback) {
         $("body")
             .unbind(event_name)
-            .bind(event_name, function(e, data) {
+            .bind(event_name, function (e, data) {
                 callback(data);
             });
     }
 };
 
 App.FullScreen = {
-    show: function(screenurl) {
+    show: function (screenurl) {
         $("#fullscreen_stage").load(screenurl);
         $("#fullscreenElement").addClass("open");
     },
-    hide: function() {
+    hide: function () {
         $("#fullscreenElement").removeClass("open");
     }
 };
 
-App.init = function() {
+App.init = function () {
     NProgress.configure({
         showSpinner: false
     });
 
-    $(document).ajaxStart(function() {
+    $(document).ajaxStart(function () {
         NProgress.start();
     });
 
-    $(document).ajaxStop(function() {
+    $(document).ajaxStop(function () {
         NProgress.done();
     });
 
-    $(".fullscreen-close").on("click", function(event) {
+    $(".fullscreen-close").on("click", function (event) {
         App.FullScreen.hide();
     });
 
@@ -53,7 +53,7 @@ App.init = function() {
         on: "hover"
     });
 
-    $('#full-screen').click(function() {
+    $('#full-screen').click(function () {
         $(document).toggleFullScreen();
         return false;
     });
@@ -76,17 +76,17 @@ App.init = function() {
 };
 
 App.Utils = {
-    isNumeric: function(n) {
+    isNumeric: function (n) {
         return !isNaN(parseFloat(n)) && isFinite(n);
     },
-    showInBrowser: function(url_to_show) {
+    showInBrowser: function (url_to_show) {
         var ref = window.open(
             url_to_show,
             "_blank",
             "location=no,footer=yes,closebuttoncaption=Close,zoom=no,footercolor=#199DDC,closebuttoncolor=#ffffff"
         );
     },
-    loadTemplateToHolder: function(template, holder, payload) {
+    loadTemplateToHolder: function (template, holder, payload) {
         try {
             var template = $(template).html();
             var html = Mustache.to_html(template, payload);
@@ -98,18 +98,18 @@ App.Utils = {
 };
 
 // Generic events to handle side bar visibility
-App.Events.listen("hide-side-nav", function() {
+App.Events.listen("hide-side-nav", function () {
     App.sidenav.close();
 });
-App.Events.listen("show-side-nav", function() {
+App.Events.listen("show-side-nav", function () {
     App.sidenav.open();
 });
 
 var isMobile = {
-    Android: function() {
+    Android: function () {
         return navigator.userAgent.match(/Android/i);
     },
-    iOS: function() {
+    iOS: function () {
         return navigator.userAgent.match(/iPhone|iPad|iPod/i);
     }
 };
@@ -140,11 +140,11 @@ function loadData(text) {
         rssurl = "http://www.nandiraju.com/CLIENTS/news/read.php?q=" + text;
 
 
-        $.get(rssurl, function(data) {
+        $.get(rssurl, function (data) {
             // GET call
 
             var $xml = $(data);
-            $xml.find("item").each(function() {
+            $xml.find("item").each(function () {
                 // xml loop
 
                 var item = $(this);
@@ -170,7 +170,7 @@ function loadData(text) {
                 modifiedItems.push(one_item);
             }); // xml loop end
 
-            modifiedItems.sort(function(a, b) {
+            modifiedItems.sort(function (a, b) {
                 return new Date(b.date) - new Date(a.date);
             });
 
@@ -233,12 +233,16 @@ function get_current_user_roles() {
 }
 
 // -------------------------GLOBAL EVENTS FOR  SCREENS
-App.Events.listen("user-logged-in", function() {
+App.Events.listen("user-logged-in", function () {
     //App.Events.emit("show-welcome-screen");
     localStorage.setItem("user_logged_in", "1");
     App.user_logged_in = true;
+    $("#user-volunteer").hide()
+    if (App && App.UserProfile && App.UserProfile.role.includes('volunteer')) {
+        $("#user-volunteer").show()
+    }
 });
-App.Events.listen("user-logged-out", function(user_data) {
+App.Events.listen("user-logged-out", function (user_data) {
     localStorage.setItem("user_logged_in", undefined);
     sessionStorage.setItem('LoginInfo', undefined);
     App.User = undefined;
@@ -247,7 +251,7 @@ App.Events.listen("user-logged-out", function(user_data) {
     document.location.href = "#/login";
     App.user_logged_in = undefined;
 });
-App.Events.listen("user-signed-up", function(user_data) {
+App.Events.listen("user-signed-up", function (user_data) {
     App.User = user_data.fb_user;
     App.UserProfile = user_data.user_signup_details;
     createEntry("signup_requests", {
@@ -260,14 +264,14 @@ App.Events.listen("user-signed-up", function(user_data) {
     debug(" User signed up" + App.UserProfile);
 });
 
-App.Events.listen("show-welcome-screen", function() {
+App.Events.listen("show-welcome-screen", function () {
     App.FullScreen.hide();
     //$("#stage").load("screens/dashboard.html");
     $("#stage").load("screens/welcome.html");
 });
 
 // Menu handling for Donor and Donee
-App.Events.listen("donor-logged-screen", function() {
+App.Events.listen("donor-logged-screen", function () {
     $("#donations").show()
     $("#requests").hide()
     $("#user-organization").show()
@@ -275,7 +279,7 @@ App.Events.listen("donor-logged-screen", function() {
     $("#my-transactions").show()
 });
 
-App.Events.listen("both-logged-screen", function() {
+App.Events.listen("both-logged-screen", function () {
     $("#admin-menu").hide()
     $("#donations").show()
     $("#requests").show()
@@ -283,7 +287,7 @@ App.Events.listen("both-logged-screen", function() {
     $("#my-transactions").show()
 });
 
-App.Events.listen("donee-logged-screen", function() {
+App.Events.listen("donee-logged-screen", function () {
     $("#admin-menu").hide()
     $("#donations").hide()
     $("#requests").show()
@@ -291,11 +295,29 @@ App.Events.listen("donee-logged-screen", function() {
     $("#my-transactions").show()
 });
 
-App.Events.listen("admin-logged-screen", function() {
+App.Events.listen("admin-logged-screen", function () {
     $("#admin-menu").show()
     $("#tal-roles").hide()
     $("#my-transactions").hide()
     // $("#donations").hide()
     // $("#requests").hide()
     $("#user-organization").hide()
+});
+
+App.Events.listen("volunteer-logged-screen", function () {
+    $("#admin-menu").hide()
+    // $("#donations").hide()
+    // $("#requests").hide()
+    // $("#user-organization").hide()
+    // $("#my-transactions").hide()
+    $("#user-volunteer").show()
+});
+
+App.Events.listen("volunteer-logged-out-screen", function () {
+    $("#user-volunteer").hide()
+});
+
+App.Events.listen("both-logged-out-screen", function () {
+    $("#donations").hide()
+    $("#requests").hide()
 });

@@ -75,6 +75,10 @@ Path.map("#/organizations").to(function() {
     $("#stage").load("screens/organizations.html");
 });
 
+Path.map("#/volunteer_profile").to(function() {
+    $("#stage").load("screens/volunteer_details.html");
+});
+
 Path.map("#/category_options").to(function() {
     $("#stage").load("screens/category_options.html");
 });

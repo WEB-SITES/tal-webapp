@@ -61,7 +61,7 @@
                 <option value="org">Organization</option>
             </select>
         </div>
-        <div class="field">
+        <div class="field" id="ein-field">
             <div class="ui input left icon">
                 <i class="certificate blue icon"></i>
                 <input type="text" value={{ein}} name="ein" id="organization-ein" placeholder="Enter EIN" />
@@ -90,7 +90,7 @@
 
 
 <script type="text/javascript">
-    $(function() {
+    $(function () {
         let TABLE_NAME = "organizations";
         let all_organizations = [];
         $("#organization-delete-button").hide();
@@ -98,29 +98,30 @@
         function enableOrganizationFormValidation() {
 
             // Custom function to validate the EIN number
-            // $.fn.form.settings.rules.checkOrgEIN = function(einValue) {
-            //     debug("Checking org details.. ", einValue);
+            $("#organization-ein").on("blur", function () {
+                const einValue = $(this).val();
+                debug("Checking EIN details.. ", einValue);
 
-            //     var orgData = null;
-            //     const fs_checking_org_data = App.db.collection(TABLE_NAME).where('ein', '==', einValue).get().then(snapshot => {
-            //         snapshot.docs.map(function(documentSnapshot) {
-            //             orgData = documentSnapshot.data();
-            //         });
-            //     });
+                var orgData = null;
+                const fs_checking_org_data = App.db.collection(TABLE_NAME).where('ein', '==', einValue)
+                    .get().then(snapshot => {
+                        snapshot.docs.map(function (documentSnapshot) {
+                            orgData = documentSnapshot.data();
+                        });
 
-            //     try {
-            //         if (orgData.ein && orgData.ein === einValue) {
-            //             status = false;
-            //         } else {
-            //             status = true;
-            //         }
-            //     } catch (e) {
-            //         status = true;
-            //     }
-
-            //     console.log('info data', status, orgData)
-            //     return status;
-            // };
+                        // console.log('info data', status, orgData)
+                        debug('orgdata ---> ', orgData)
+                        if (orgData === null) {
+                            // $("#ein-error-message").html("Proceed to save");
+                            $(".ein-error-message").remove();
+                        } else {
+                            $("#ein-field").addClass('error')
+                            $("#ein-field").append(
+                                "<div class='ui basic red pointing prompt label transition visible ein-error-message'>EIN already exists</div>"
+                            );
+                        }
+                    });
+            });
 
             $('.organization-form').form({
                 on: 'blur',
@@ -156,10 +157,9 @@
                     },
                     ein: {
                         identifier: 'organization-ein',
-                        rules: [
-                            {
+                        rules: [{
                                 type: 'empty',
-                                prompt: function(value) {
+                                prompt: function (value) {
                                     if (!value) {
                                         return "Please enter EIN";
                                     }
@@ -167,12 +167,8 @@
                             },
                             {
                                 type: 'regExp[/^\\d{2}\\-?\\d{7}$/]',
-                                prompt: "Format must be XX-XXXXXXX"
-                            },
-                            // {
-                            //     type: 'checkOrgEIN',
-                            //     prompt: "Enter this value"
-                            // }
+                                prompt: "Format must be 12-1234567"
+                            }
                         ]
                     },
                     description: {
@@ -183,12 +179,12 @@
                         }]
                     },
                 },
-                onSuccess: function(event, fields) {
+                onSuccess: function (event, fields) {
                     submitOrganizationForm();
                     $("#organization-delete-button").hide();
                     return false;
                 },
-                onFailure: function(event, fields) {
+                onFailure: function (event, fields) {
                     return false;
                 }
             });
@@ -226,9 +222,9 @@
                 App.Utils.loadTemplateToHolder(
                     "#org-template",
                     "#org-information-holder", {
-                    ...selected_organization,
-                    org_id
-                }
+                        ...selected_organization,
+                        org_id
+                    }
                 );
                 $("#organization-type").val(selected_organization.org_type);
             } else {
@@ -244,17 +240,17 @@
         getOrgDetails(App.organization_id ? App.organization_id : null);
         enableOrganizationFormValidation();
 
-        $("body").on("click", "#organizations-list-button", function(e) {
+        $("body").on("click", "#organizations-list-button", function (e) {
             showPage("#/organizations");
             e.stopImmediatePropagation();
         });
 
-        $("body").on("click", "#organization-cancel-button", function(e) {
+        $("body").on("click", "#organization-cancel-button", function (e) {
             showPage("#/organizations");
             e.stopImmediatePropagation();
         });
 
-        $("body").on("click", "#organization-delete-button", function(e) {
+        $("body").on("click", "#organization-delete-button", function (e) {
             var existing_id = $("#organization-id").val();
             if (existing_id) existing_id = existing_id.trim();
             if (existing_id && existing_id.length > 1) {

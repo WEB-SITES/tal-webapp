@@ -1,0 +1,109 @@
+<style>
+
+</style>
+
+<div class="screen-wrapper" style="padding-right:10px;margin-top:20px;">
+
+  <div class="ui two column stackable grid middle aligned container remove-on-mobile" id="admin-block">
+    <div class="column">
+      <h4 class="ui header ui blue">
+        <i class="hand paper outline outline blue icon"></i>
+        <div class="content">
+          Volunteer Profile
+          <div class="sub header">Set up your profile</div>
+        </div>
+      </h4>
+    </div>
+    <div class="column right aligned">
+      <div class="ui tiny button orange" style="border-radius: 15px;" id="create-volunteer-profile">
+        <i class="edit icon"></i> Update Profile</div>
+    </div>
+  </div>
+
+  <div class="ui divider remove-on-mobile"></div>
+  <div class="ui container">
+    <div class="ui basic segment" id="volunteer-profile-item-holder">
+      <div class="ui active centered inline loader"></div>
+      <!-- <div class="ui tiny form">
+        <div class="field">
+          <div class="ui input left icon fluid">
+            <i class="facebook blue icon"></i>
+            <input type="text" id="experience" value="" placeholder="Experience having">
+          </div>
+        </div>
+        <div class="field">
+          <div class="ui input left icon fluid">
+            <i class="twitter outline blue icon"></i>
+            <input type="text" id="availability" value="" placeholder="No. of Hours availability">
+          </div>
+        </div>
+        <div class="field">
+          <div class="ui input left icon fluid">
+            <i class="globe orange icon"></i>
+            <input type="text" id="workwithus" value="" placeholder="Why you want to work with us">
+          </div>
+        </div>
+      </div> -->
+    </div>
+  </div>
+</div>
+
+<template id="volunteer-details-template">
+  <div class="ui tiny form">
+    <div class="two fields">
+      <div class="field">
+        <label for="experience">Total experience</label>
+        <div class="ui input left icon fluid">
+          <input type="text" id="experience" value={{volunteer_experience}} placeholder="Experience having">
+        </div>
+      </div>
+      <div class="field">
+        <label for="availability">No. of hours availability?</label>
+        <div class="ui input left icon fluid">
+          <input type="text" id="availability" value={{volunteer_availability}} placeholder="No. of Hours availability">
+        </div>
+      </div>
+    </div>
+    <div class="field">
+      <label for="workwithus">Why you want to work with us?</label>
+      <div class="ui input left icon fluid">
+        <textarea type="text" id="workwithus" placeholder="Why you want to work with us">{{volunteer_work_with_us}}
+        </textarea>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script type="text/javascript">
+  $(function () {
+    let TABLE_NAME = "user_profile";
+    async function getData() {
+      await App.db.collection(TABLE_NAME).where('user_id', '==', App.User.uid)
+        .get().then(function (querySnapshot) {
+          myProfile = querySnapshot.docs[0].data();
+          App.Utils.loadTemplateToHolder(
+            "#volunteer-details-template",
+            "#volunteer-profile-item-holder",
+            myProfile
+          );
+          debug('voldata', myProfile)
+        }).catch((e) => {
+
+        });
+    }
+    getData();
+
+    $("#create-volunteer-profile").click(function (e) {
+
+      let userData = {
+        volunteer_experience: $("#experience").val(),
+        volunteer_availability: $("#availability").val(),
+        volunteer_work_with_us: $("#workwithus").val()
+      }
+      if (App.db.collection(TABLE_NAME).where('user_id', '==', App.User.uid)) {
+        updateEntry(TABLE_NAME, App.User.record_id, userData);
+        toastr["success"]("Updated profile successfully", "Success");
+      }
+    });
+  });
+</script>

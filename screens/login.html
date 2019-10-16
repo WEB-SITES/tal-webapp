@@ -13,13 +13,13 @@
         height: 100%;
         z-index: 999999;
         font-family: Lato;
-        background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.1)), url(https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?ixlib=rb-1.2.1&auto=format&fit=crop&w=1446&q=80) no-repeat center center fixed;
+        background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(img/login_bg.jpg) no-repeat center center fixed;
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;
         background-size: cover;
     }
-    
+
     .col {
         flex: 1;
         display: flex;
@@ -28,51 +28,51 @@
         height: 100%;
         font-family: Lato;
     }
-    
+
     .bg1 {
         background: #222;
         background: rgba(0, 0, 0, 0.5);
     }
-    
+
     .bg2 {
         /* background: linear-gradient(90deg, #00d2ff 0%, #3a47d5 100%); */
         background: rgba(255, 250, 255, 0.8);
         /* background: #efefef; */
     }
-    
+
     .punch {
         color: white;
         font-weight: 100;
         letter-spacing: 5px;
     }
-    
+
     .punch-text {
         color: white;
         font-weight: 300;
         letter-spacing: 5px;
         padding: 20px;
     }
-    
+
     .login-message {
         color: black;
         font-weight: 400;
         letter-spacing: 2px;
     }
-    
+
     #emagia-logo {
         position: absolute;
         top: 0px;
         left: 15px;
         z-index: 9999999;
     }
-    
+
     #client-logo {
         position: absolute;
         top: 30px;
         right: 10px;
         z-index: 9999999;
     }
-    
+
     @media only screen and (max-width: 768px) {
         .bg1 {
             display: none;
@@ -194,9 +194,6 @@
     </div>
 </div>
 
-
-
-
 <script type="text/javascript" charset="utf-8">
     function isEmail(email) {
         var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
@@ -212,52 +209,35 @@
     }
 
     function handleLogin() {
-
         $("#login-button").click(function(e) {
-            debug(" login button clicked.. ");
             $(this).addClass('loading');
             e.preventDefault();
             var email = $("#email").val();
             var password = $("#password").val();
-            // App.auth.signInWithEmailAndPassword(email, password)
-            //     .catch(function(err) {
-            //     });
-
             App.auth.signInWithEmailAndPassword(email, password)
-                .then(function(firebaseUser) {
-                    debug("Login --" + firebaseUser);
-                })
-                .catch(function(error) {
-                    debug(error.code + "\n" + error.message);
+                .catch(function(err) {
                     $("#login-button").removeClass('loading');
-                    //$("#email").val("");
-                    $("#password").val("");
-                    toastr["error"]("Invalid credentails. Please try again.", "Error"); // Error Handling
+                    toastr["error"]("Invalid credentails. Please try again.", "Error");
                 });
-
+            e.stopImmediatePropagation();
         });
 
     }
 
     function handleSignUp() {
         $("#signup-button").click(function(e) {
-            $(this).addClass('loading');
             e.preventDefault();
+            $(this).addClass('loading');
             var new_user = objectifyForm($("form").serializeArray());
             if (isEmail(new_user.email)) {
                 debug("valid email " + new_user.email);
-                if (!new_user.firstname) {
-                    $("#signup-button").removeClass("loading");
-                    toastr["error"]("Enter first name", "Error");
-                    return;
-                }
                 if (!new_user.password) {
-                    $("#signup-button").removeClass("loading");
+                    $("#signup-button").removeClass('loading');
                     toastr["error"]("Enter a valid password.", "Error");
                     return;
                 }
                 if (new_user.password != new_user.confirm_password) {
-                    $("#signup-button").removeClass("loading");
+                    $("#signup-button").removeClass('loading');
                     toastr["error"]("Passwords dont seem to match. Please review.", "Error");
                     return;
                 }
@@ -283,19 +263,20 @@
                         // Handle Errors here.
                         var errorCode = error.code;
                         var errorMessage = error.message;
-                        $("#signup-button").removeClass("loading");
+                        $("#signup-button").removeClass('loading');
                         toastr["error"]("Error creating account.\n" + error.message, "Error");
                     });
 
             } else {
-                $("#signup-button").removeClass("loading");
+                $("#signup-button").removeClass('loading');
                 toastr["error"]("Enter a valid email " + new_user.email, "Error");
             }
+            e.stopImmediatePropagation();
         });
     }
 
     $(function() {
-        $(".fullscreen-close").hide();
+        $(".close").hide();
 
         function showLogin() {
             $("#sign-up-panel").hide();

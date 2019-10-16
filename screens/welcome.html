@@ -10,11 +10,13 @@
     </div>
     <div class="ui container center aligned animated fadeInUp">
         <h4 class="ui center aligned header">
-            Touch-A-Life Foundation facilitates one-to-one connections between donors and recipients by leveraging technologies to disrupt the digital divide and connect those willing to give with those in need.
+            Touch-A-Life Foundation facilitates one-to-one connections between donors and recipients by leveraging
+            technologies to disrupt the digital divide and connect those willing to give with those in need.
         </h4>
         <div class="ui divider"></div>
         <br>
-        <div class="ui blue button" style="border-radius:20px;" onclick="javascript:window.open('https://touchalife.org/register-now/');">Register for the event</div>
+        <div class="ui blue button" style="border-radius:20px;"
+            onclick="javascript:window.open('https://touchalife.org/register-now/');">Register for the event</div>
     </div>
     <div class="ui basic center aligned segment animated zoomInUp">
         <i class="icon clock big red center aligned outline animated pulse infinite"></i>
@@ -25,7 +27,12 @@
 <script type="text/javascript">
     var countDownFunction = undefined;
 
-    $(function() {
+    $(function () {
+        const welcomeLoginInfo = sessionStorage.getItem('LoginInfo');
+
+        if (welcomeLoginInfo === null) {
+            showPage('#/logout');
+        }
 
         if (App.isMobile || isSmallScreen()) {
             $("#title-text").html("TAL Event");
@@ -39,7 +46,7 @@
 
         var countDownDate = new Date("Nov 15, 2019 9:00:00").getTime();
 
-        countDownFunction = setInterval(function() {
+        countDownFunction = setInterval(function () {
             var now = new Date().getTime();
             var distance = countDownDate - now;
             var days = Math.floor(distance / (1000 * 60 * 60 * 24));

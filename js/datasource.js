@@ -28,7 +28,7 @@ firebase.initializeApp(firebaseConfig);
 App.db = firebase.firestore();
 App.auth = firebase.auth();
 
-App.auth.onAuthStateChanged(function(fireUser) {
+App.auth.onAuthStateChanged(function (fireUser) {
     debug(" Login state changed ");
     if (fireUser) {
         App.User = fireUser;
@@ -36,10 +36,12 @@ App.auth.onAuthStateChanged(function(fireUser) {
         var userId = App.User.uid;
         //debug("Got User id " + JSON.stringify(App.User));
 
-        App.db.collection("user_profile").where("user_id", "==", App.User.uid)
+        App.db.collection("user_profile").where("user_id", "==", App.User.uid).where("account_status", "==", 'active')
             .get()
-            .then(function(querySnapshot) {
+            .then(function (querySnapshot) {
                 if (querySnapshot.size === 0) {
+                    toastr["error"]("Account not found or inactive", "Error");
+                    $("#login-button").removeClass('loading');
                     console.log("User data not found");
                     return;
                 } else {
@@ -55,7 +57,8 @@ App.auth.onAuthStateChanged(function(fireUser) {
                             last_name: App.UserProfile.last_name,
                             email: App.UserProfile.email,
                             record_id: App.User.record_id,
-                            roles: App.UserProfile.role
+                            roles: App.UserProfile.role,
+                            account_status: App.UserProfile.account_status
                         }
 
                         sessionStorage.setItem("LoginInfo", JSON.stringify(loginInfo));
@@ -69,6 +72,11 @@ App.auth.onAuthStateChanged(function(fireUser) {
                         }
                         if (myLoginInfo.includes('donee')) {
                             App.Events.emit("donee-logged-screen");
+                        }
+                        if (myLoginInfo.includes('volunteer')) {
+                            App.Events.emit("volunteer-logged-screen");
+                        } else {
+                            App.Events.emit("volunteer-logged-out-screen");
                         }
                         if ((myLoginInfo.includes('donor')) && (myLoginInfo.includes('donee'))) {
                             App.Events.emit("both-logged-screen");

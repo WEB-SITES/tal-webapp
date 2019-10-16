@@ -4,7 +4,7 @@
         margin: auto !important;
         border: 1px solid silver;
     }
-    
+
     .ui.form .field>.uploads {
         display: inline-block;
     }
@@ -27,127 +27,141 @@
 
     <div class="ui container">
         <div class="ui center aligned middle aligned basic segment request_form_segment">
-            <div class="ui form" id="event-form" style="background:#f5f5f5;padding:20px;">
-                <div class="field">
-                    <div class="ui input left icon">
-                        <i class="edit blue icon"></i>
-                        <input type="text" id="title" name="title" placeholder="Enter title for your requirement" />
-                    </div>
-                </div>
-
-                <div class="field">
-                    <textarea rows="2" id="event-description" name="description" placeholder="Enter event description"></textarea>
-                </div>
-
-                <div class="field">
-                    <select class="ui dropdown category" name="category" id="category">
-                        <option value="">Select category</option>
-                        <option value="Homeless">Homeless</option>
-                        <option value="Medical">Medical</option>
-                        <option value="Education">Education</option>
-                    </select>
-                </div>
-                <div class="three fields" id="type-homeless">
+            <form class="event-request-form">
+                <div class="ui form" id="" style="background:#f5f5f5;padding:20px;">
                     <div class="field">
-                        <select class="ui dropdown category-type" name="catType" id="cat-type">
-                            <option value="">Select category type</option>
-                            <option value="Shirts">Shirts</option>
-                            <option value="Pants">Pants</option>
-                            <option value="Shoes">Shoes</option>
-                            <option value="Socks">Socks</option>
-                            <option value="Hoodies">Hoodies</option>
-                            <option value="Blankets">Blankets</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <select class="ui dropdown category-size" name="catSize" id="cat-size">
-                            <option value="">Select category size</option>
-                            <option value="XS">XS (Extra Small)</option>
-                            <option value="S">S (Small)</option>
-                            <option value="M">M (Medium)</option>
-                            <option value="L">L (Large)</option>
-                            <option value="XL">XL (Extra Large)</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <input type="text" id="cat-quantity" name="quantity" placeholder="Enter Quantity" />
-                    </div>
-                </div>
-
-                <div class="two fields" id="type-education">
-                    <div class="field">
-                        <select class="ui dropdown education-type" name="edu-type" id="edu-type">
-                            <option value="">Select Type</option>
-                            <option value="Tuition Fees">Tuition Fees</option>
-                            <option value="Tutoring">Tutoring</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <div class="ui input left icon fluid">
-                            <i class="dollar sign icon"></i>
-                            <input type="text" id="education-amount" placeholder="Enter required amount">
+                        <div class="ui input left icon">
+                            <i class="edit blue icon"></i>
+                            <input type="text" id="title" name="req-title"
+                                placeholder="Enter title for your requirement" />
                         </div>
                     </div>
-                </div>
 
-                <div class="two fields" id="type-medical">
                     <div class="field">
-                        <select class="ui dropdown medical-type" name="medical" id="medicals">
-                            <option value="">Select Type</option>
-                            <option value="type1diabetes">Type1 Diabetes</option>
-                            <option value="type2diabetes">Type2 Diabetes</option>
-                            <option value="type3diabetes">Type3 Diabetes</option>
-                            <option value="disabilities">Children With Disabilities</option>
+                        <textarea rows="2" id="event-description" name="req-description"
+                            placeholder="Enter organization description"></textarea>
+                    </div>
+
+                    <div class="field" id="request-form-organization-row-field">
+                        <select class="ui dropdown organization" name="organization" id="organization">
+                            <option value="">Select organization</option>
                         </select>
                     </div>
+
                     <div class="field">
-                        <div class="ui input left icon fluid">
-                            <i class="dollar sign icon"></i>
-                            <input type="text" id="medical-amount" placeholder="Enter required amount">
+                        <select class="ui dropdown category" name="category" id="category">
+                            <option value="">Select category</option>
+                            <option value="Homeless">Homeless</option>
+                            <!-- <option value="Medical">Medical</option>
+                            <option value="Education">Education</option> -->
+                            <option value="vol_services">Volunteer Services</option>
+                        </select>
+                    </div>
+                    <div class="three fields" id="type-homeless">
+                        <div class="field">
+                            <select class="ui dropdown category-type" name="cat_type" id="cat-type">
+                                <option value="">Select category type</option>
+                                <option value="Shirts">Shirts</option>
+                                <option value="Pants">Pants</option>
+                                <option value="Shoes">Shoes</option>
+                                <option value="Socks">Socks</option>
+                                <option value="Hoodies">Hoodies</option>
+                                <option value="Blankets">Blankets</option>
+                                <option value="Books">Books</option>
+                                <option value="Money">Money Donation</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <select class="ui dropdown category-size" name="cat_size" id="cat-size">
+                                <option value="">Select category size</option>
+                                <option value="XS">XS (Extra Small)</option>
+                                <option value="S">S (Small)</option>
+                                <option value="M">M (Medium)</option>
+                                <option value="L">L (Large)</option>
+                                <option value="XL">XL (Extra Large)</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <input type="text" id="cat-quantity" name="quantity" placeholder="Enter Quantity" />
                         </div>
                     </div>
-                </div>
 
-                <div class="field" id="imageUpload">
-                    <input type="file" class="inputfile" id="image-upload-button" />
-                    <label for="image-upload-button" class="ui tiny  orange basic button uploads">
-                        <i class="ui upload icon"></i>
-                        <div class="ui dimmer" id="image-dimmer">
-                            <div class="ui indeterminate text loader">Uploading Image</div>
+                    <div class="two fields" id="type-education">
+                        <div class="field">
+                            <select class="ui dropdown education-type" name="edu-type" id="edu-type">
+                                <option value="">Select Type</option>
+                                <option value="Tuition Fees">Tuition Fees</option>
+                                <option value="Tutoring">Tutoring</option>
+                            </select>
                         </div>
-                        <span id="upload-button-text">Upload Image</span>
-                        <input type="hidden" id="image-hidden">
-                    </label>
-                    <input type="file" class="inputfile" id="document-upload-button" />
-                    <label for="document-upload-button" class="ui tiny teal basic button uploads">
-                        <i class="ui upload icon"></i>
-                        <div class="ui dimmer" id="document-dimmer">
-                            <div class="ui indeterminate text loader">Uploading Documents</div>
+                        <div class="field">
+                            <div class="ui input left icon fluid">
+                                <i class="dollar sign icon"></i>
+                                <input type="text" id="education-amount" placeholder="Enter required amount">
+                            </div>
                         </div>
-                        <span id="upload-document-text">Upload any supporting documents</span>
-                        <input type="hidden" id="doc-hidden">
-                    </label>
-                    <!-- <button class="ui teal button"></button> -->
-                </div>
+                    </div>
 
-                <div class="field">
-                    <textarea rows="2" id="specialreq" name="specialreq" placeholder="Special request (if any)"></textarea>
-                </div>
+                    <div class="two fields" id="type-medical">
+                        <div class="field">
+                            <select class="ui dropdown medical-type" name="medical" id="medicals">
+                                <option value="">Select Type</option>
+                                <option value="type1diabetes">Type1 Diabetes</option>
+                                <option value="type2diabetes">Type2 Diabetes</option>
+                                <option value="type3diabetes">Type3 Diabetes</option>
+                                <option value="disabilities">Children With Disabilities</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <div class="ui input left icon fluid">
+                                <i class="dollar sign icon"></i>
+                                <input type="text" id="medical-amount" placeholder="Enter required amount">
+                            </div>
+                        </div>
+                    </div>
 
-                <div class="center aligned field">
-                    <div class="ui tiny button red " id="request-delete-button">Delete</div>
-                    <div class="ui tiny button orange " id="request-cancel-button">Cancel</div>
-                    <div class="ui tiny button blue " id="request-save-button">Save</div>
-                    <br>
+                    <div class="field" id="imageUpload">
+                        <input type="file" class="inputfile" id="image-upload-button" />
+                        <label for="image-upload-button" class="ui tiny  orange basic button uploads">
+                            <i class="ui upload icon"></i>
+                            <div class="ui dimmer" id="image-dimmer">
+                                <div class="ui indeterminate text loader">Uploading Image</div>
+                            </div>
+                            <span id="upload-button-text">Upload Image</span>
+                            <input type="hidden" id="image-hidden">
+                        </label>
+                        <input type="file" class="inputfile" id="document-upload-button" />
+                        <label for="document-upload-button" class="ui tiny teal basic button uploads">
+                            <i class="ui upload icon"></i>
+                            <div class="ui dimmer" id="document-dimmer">
+                                <div class="ui indeterminate text loader">Uploading Documents</div>
+                            </div>
+                            <span id="upload-document-text">Upload any supporting documents</span>
+                            <input type="hidden" id="doc-hidden">
+                        </label>
+                        <!-- <button class="ui teal button"></button> -->
+                    </div>
+
+                    <div class="field">
+                        <textarea rows="2" id="specialreq" name="specialreq"
+                            placeholder="Special request (if any)"></textarea>
+                    </div>
+
+                    <div class="center aligned field">
+                        <div class="ui tiny button red " id="request-delete-button">Delete</div>
+                        <div class="ui tiny button orange " id="request-cancel-button">Cancel</div>
+                        <button class="ui tiny button blue " id="request-save-button">Save</button>
+                        <br>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 
 </div>
 
 <script type="text/javascript">
-    $(function() {
+    $(function () {
 
         if (isMobileDevice || isSmallScreen()) {
             $("#title-text").html("Requests");
@@ -167,7 +181,7 @@
         }
 
         var fileObject;
-        $("#image-upload-button").on('change', function(e) {
+        $("#image-upload-button").on('change', function (e) {
 
             $("#image-dimmer").addClass("active");
 
@@ -182,7 +196,7 @@
                 debug("Error ... ");
             }, function complete() {
                 // Upload completed successfully, now we can get the download URL
-                uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+                uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
 
                     $("#image-hidden").val(downloadURL)
                     $("#image-dimmer").removeClass("active");
@@ -191,7 +205,7 @@
         });
 
         var docObject;
-        $("#document-upload-button").on('change', function(e) {
+        $("#document-upload-button").on('change', function (e) {
 
             $("#document-dimmer").addClass("active");
 
@@ -206,7 +220,7 @@
                 debug("Error ... ");
             }, function complete() {
                 // Upload completed successfully, now we can get the download URL
-                uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+                uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
 
                     $("#doc-hidden").val(downloadURL);
                     $("#document-dimmer").removeClass("active");
@@ -215,62 +229,61 @@
         });
 
         function enableRequestFormValidations() {
-            $('#event-form')
-                .form({
-                    on: 'blur',
-                    inline: true,
-                    fields: {
-                        catName: {
-                            identifier: 'catName',
-                            rules: [{
-                                type: 'empty',
-                                prompt: 'Please Select Category Name'
-                            }]
-                        },
-                        eventName: {
-                            identifier: 'eventName',
-                            rules: [{
-                                type: 'empty',
-                                prompt: 'Please enter Event name'
-                            }]
-                        },
-                        startDate: {
-                            identifier: 'startDate',
-                            rules: [{
-                                type: 'empty',
-                                prompt: 'Please enter Date'
-                            }]
-                        },
-                        endDate: {
-                            identifier: 'endDate',
-                            rules: [{
-                                type: 'empty',
-                                prompt: 'Please enter Date'
-                            }]
-                        },
-                        description: {
-                            identifier: 'description',
-                            rules: [{
-                                type: 'empty',
-                                prompt: 'Please enter description'
-                            }]
-                        },
-                        location: {
-                            identifier: 'location',
-                            rules: [{
-                                type: 'empty',
-                                prompt: 'Please enter location'
-                            }]
-                        },
-                        link: {
-                            identifier: 'link',
-                            rules: [{
-                                type: 'empty',
-                                prompt: 'Please enter link'
-                            }]
-                        },
-                    }
-                });
+            $('.event-request-form').form({
+                on: 'blur',
+                inline: true,
+                fields: {
+                    title: {
+                        identifier: 'req-title',
+                        rules: [{
+                            type: 'empty',
+                            prompt: 'Please enter title'
+                        }]
+                    },
+                    description: {
+                        identifier: 'req-description',
+                        rules: [{
+                            type: 'empty',
+                            prompt: 'Please enter description'
+                        }]
+                    },
+                    category: {
+                        identifier: 'category',
+                        rules: [{
+                            type: 'empty',
+                            prompt: 'Please select category'
+                        }]
+                    },
+                    cat_type: {
+                        identifier: 'cat_type',
+                        rules: [{
+                            type: 'empty',
+                            prompt: 'Please select category type'
+                        }]
+                    },
+                    cat_size: {
+                        identifier: 'cat_size',
+                        rules: [{
+                            type: 'empty',
+                            prompt: 'Please select category type'
+                        }]
+                    },
+                    quantity: {
+                        identifier: 'quantity',
+                        rules: [{
+                            type: 'empty',
+                            prompt: 'Please enter quantity'
+                        }]
+                    },
+                },
+                onSuccess: function (event, fields) {
+                    submitRequestsForm();
+                    return false;
+                },
+                onFailure: function (event, fields) {
+                    return false;
+                }
+            });
         }
 
 
@@ -291,7 +304,8 @@
             $("#title").val(selected_donation_request.title);
             $("#event-description").val(selected_donation_request.description);
             $("#specialreq").val(selected_donation_request.special_request);
-            $('#category').val(selected_donation_request.category).attr('selected', 'selected');
+            $("#category").val(selected_donation_request.category).attr('selected', 'selected');
+            $("#organization").val(selected_donation_request.organization_id).attr('selected', 'selected');
             if ($('#category option:selected').text() === 'Homeless') {
                 $("#type-homeless").show()
                 $("#type-education").hide()
@@ -316,7 +330,7 @@
             }
         }
 
-        $("#category").change(function() {
+        $("#category").change(function () {
             if ($('#category option:selected').val() === 'Homeless') {
                 $("#type-homeless").show()
                 $("#type-education").hide()
@@ -332,8 +346,11 @@
             }
         });
 
-        $("#request-save-button").click(function(e) {
+        $("#request-save-button").click(function (e) {
+            enableRequestFormValidations()
+        })
 
+        function submitRequestsForm() {
             if (edit_mode) {
                 var updateObjEntry = {
                     title: $("#title").val(),
@@ -341,7 +358,8 @@
                     category: $('#category option:selected').val(),
                     category_size: $('#cat-size option:selected').val(),
                     category_qty: $('#cat-quantity').val(),
-                    special_request: $('#specialreq').val()
+                    special_request: $('#specialreq').val(),
+                    organization_id: $('#organization option:selected').val()
                 }
 
                 if ($("#image-hidden").val() !== "") {
@@ -380,7 +398,8 @@
                     user_id: App.User.uid,
                     document_url: $("#doc-hidden").val(),
                     image_url: $("#image-hidden").val(),
-                    status: 'in process'
+                    status: 'in process',
+                    organization_id: $('#organization option:selected').val()
                 }
                 if (createRequestObj.category === 'Education') {
                     createRequestObj.category_type = $('#edu-type option:selected').val();
@@ -398,19 +417,43 @@
             }
 
             showPage("#/requests");
-        });
+        };
+        enableRequestFormValidations();
+        // display only current user Organization List
+        async function getUserOrganizationDDL() {
+            const orgDDL = [];
+            var orgDDLOptions =
+                '<select class="ui dropdown organization" name="organization" id="organization"><option value>Select organization</option>';
+            await App.db.collection('organizations').where('user_id', '==', App && App.User && App.User.uid).get()
+                .then((snapshot) => {
+                    let changes = snapshot.docChanges();
+                    changes.forEach(change => {
+                        const org_item = change.doc.data();
+                        let org_selected = '';
+                        if (edit_mode &&
+                            selected_donation_request.organization_id === change.doc.id) {
+                            org_selected = 'selected'
+                        }
+                        orgDDLOptions = orgDDLOptions + "<option value='" + change.doc.id +
+                            "' " + org_selected + ">" + org_item.name + "</option>";
+                    });
+                })
+                .catch();
+            orgDDLOptions = orgDDLOptions + "</select>"
+            $("#request-form-organization-row-field").html(orgDDLOptions);
+        }
+        getUserOrganizationDDL();
 
-        $("#request-cancel-button").click(function(e) {
+        $("#request-cancel-button").click(function (e) {
             showPage("#/requests");
         });
 
-        $("#request-delete-button").click(function(e) {
+        $("#request-delete-button").click(function (e) {
             if (edit_mode) {
                 deleteEntry(TABLE_NAME, selected_donation_request.id);
                 toastr["success"]("Deleted request successfully", "Success");
             }
             showPage("#/requests");
         });
-
     });
 </script>

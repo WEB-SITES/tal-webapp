@@ -6,6 +6,7 @@
         /* border: 1px solid #dcdcdc !important; */
     }
 </style>
+
 <div class="screen-wrapper" style="padding-right:10px;margin-top:20px;">
 
     <div class="ui two column stackable grid middle aligned container">
@@ -25,137 +26,153 @@
     </div>
 
     <div class="ui divider"></div>
-
     <br>
 
-    <div class="ui stackable grid">
-        <div class="four wide column">
-            <!-- Tab section starts here -->
-            <div class="ui pointing secondary vertical menu">
-                <a class="item active" data-tab="personal">Personal Details</a>
-                <a class="item" data-tab="contact">Contact Details</a>
-                <a class="item" data-tab="social">Social Details</a>
-                <a class="item" data-tab="reset">Reset Password</a>
-                <a class="item" data-tab="image">Profile Image</a>
-                <a class="item" data-tab="roles" id="tal-roles">TAL roles</a>
-            </div>
-        </div>
-        <div class="ten wide strectched column" style="background: #f5f5f5;">
-            <div class="ui basic tab segment active" data-tab="personal">
-                <h4 class="ui header">
-                    Public Profile
-                </h4>
-                <div class="ui fluid center aligned card profile-card-style">
-                    <div class="content">
-                        <div class="ui active centered inline big loader" id="profile-loader"></div>
-                        <div class="description" id="personal-information-holder">
+    <div class="ui container ui three column  doubling stackable masonry grid">
 
-                        </div>
+
+
+        <div class="column">
+            <div class="ui fluid card">
+                <div class="content">
+                    <div class="header">Contact info</div>
+                    <div class="meta">
+                        <span>Enter your contact details</span>
                     </div>
                 </div>
-            </div>
-            <div class="ui basic tab segment" data-tab="contact">
-                <h4 class="ui header">
-                    Mailing Address
-                </h4>
-                <div class="ui fluid center aligned card profile-card-style">
-                    <div class="content">
-                        <div class="description" id="contact-information-holder">
-
-                        </div>
+                <div class="extra content">
+                    <br>
+                    <div id="contact-information-holder">
+                        <div class="ui active centered inline loader"></div>
                     </div>
-                </div>
-
-                <div class="ui fluid center aligned card profile-card-style">
-                    <div class="content">
-                        <div class="description" id="contact-information-holder">
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="ui basic tab segment " data-tab="social">
-                <h4 class="header center aligned">
-                    Social Profile
-                </h4>
-                <div class="ui fluid card profile-card-style">
-                    <div class="content">
-                        <div class="description" id="social-information-holder">
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="ui basic tab segment " data-tab="reset">
-                <h4 class="header center aligned">
-                    Change Password
-                </h4>
-                <div class="ui fluid card profile-card-style">
-                    <div class="content">
-                        <div class="description">
-                            <div class="ui tiny form">
-                                <div class="field">
-                                    <div class="ui input left icon fluid">
-                                        <i class="key orange icon"></i>
-                                        <input type="text" id="newpasswword" placeholder="Enter New Password">
-                                    </div>
-                                </div>
-                                <div class="field">
-                                    <div class="ui input left icon fluid">
-                                        <i class="globe orange icon"></i>
-                                        <input type="text" id="confirmpassword" placeholder="Confirm Password">
-                                    </div>
-                                </div>
-                                <div class="field center aligned">
-                                    <br>
-                                    <button class="ui orange mini button">Change Password</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="ui basic tab segment" data-tab="image">
-                <h4 class="header center aligned">
-                    Avatar
-                </h4>
-                <div class="ui fluid card profile-card-style">
-                    <div class="content">
-                        <div class="description center aligned">
-
-                            <div class="ui basic segment">
-                                <div class="ui dimmer" id="profile-dimmer">
-                                    <div class="ui indeterminate text loader">Preparing Files</div>
-                                </div>
-                                <img src="https://semantic-ui.com/images/wireframe/image.png" alt=""
-                                    id="user-profile-image" class="ui image small center aligned"
-                                    style="margin-bottom: 20px;">
-                                <div>
-                                    <input type="file" class="inputfile" id="profile-image-upload-button" />
-                                    <label for="profile-image-upload-button" class="ui small teal button">
-                                        <i class="ui upload icon"></i>
-                                        <span id="profile-upload-button-text">Upload Profile Image</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="ui basic tab segment" data-tab="roles">
-                <h4 class="header center aligned">
-                    Select your Role for TAL
-                </h4>
-                <div id="role-information-holder">
-
+                    <br>
                 </div>
             </div>
         </div>
+
+        <div class="column">
+            <div class="ui fluid card">
+                <div class="content">
+                    <div class="header">Avatar</div>
+                    <div class="meta">
+                        <span>Upload your profile image</span>
+                    </div>
+                </div>
+                <div class="extra content">
+                    <br>
+                    <div class="ui basic center aligned segment">
+                        <div class="ui dimmer" id="profile-dimmer">
+                            <div class="ui indeterminate text loader">Preparing Files</div>
+                        </div>
+                        <img src="https://semantic-ui.com/images/wireframe/image.png" alt="" id="user-profile-image"
+                            class="ui image small centered" style="margin-bottom: 20px;">
+                        <div>
+                            <input type="file" class="inputfile" id="profile-image-upload-button" />
+                            <label for="profile-image-upload-button" class="ui small teal button">
+                                <i class="ui upload icon"></i>
+                                <span id="profile-upload-button-text">Upload Profile Image</span>
+                            </label>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="column">
+            <div class="ui fluid card">
+                <div class="content">
+                    <div class="header">Public Profile</div>
+                    <div class="meta">
+                        <span>Enter your profile details</span>
+                    </div>
+                </div>
+                <div class="extra content">
+                    <br>
+                    <div id="personal-information-holder">
+                        <div class="ui active centered inline loader"></div>
+                    </div>
+                    <br>
+                </div>
+            </div>
+        </div>
+
+        <div class="column">
+
+            <div class="ui fluid card">
+                <div class="content">
+                    <div class="header">Social info</div>
+                    <div class="meta">
+                        <span>Enter your social details</span>
+                    </div>
+                </div>
+                <div class="extra content">
+                    <br>
+                    <div id="social-information-holder">
+                        <div class="ui active centered inline loader"></div>
+                    </div>
+                    <br>
+                </div>
+            </div>
+        </div>
+
+        <div class="column">
+            <div class="ui fluid card">
+                <div class="content">
+                    <div class="header">Password settings</div>
+                    <!-- <div class="meta">
+                    <span>Enter your social details</span>
+                </div> -->
+                </div>
+                <div class="extra content">
+                    <br>
+                    <div class="ui tiny form">
+                        <div class="field">
+                            <div class="ui input left icon fluid">
+                                <i class="key orange icon"></i>
+                                <input type="text" id="newpassword" placeholder="Enter New Password">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui input left icon fluid">
+                                <i class="globe orange icon"></i>
+                                <input type="text" id="confirmpassword" placeholder="Confirm Password">
+                            </div>
+                        </div>
+                        <div class="field center aligned">
+                            <br>
+                            <button class="ui orange mini button" id="profile-change-password-button">Change
+                                Password</button>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+            </div>
+        </div>
+
+        <div class="column">
+            <div class="ui fluid card">
+                <div class="content">
+                    <div class="header">Roles</div>
+                    <div class="meta">
+                        <span>Select your role type</span>
+                    </div>
+                </div>
+
+                <div class="extra content">
+                    <br>
+                    <div id="role-information-holder">
+                        <div class="ui active centered inline loader"></div>
+                    </div>
+                    <br>
+                </div>
+            </div>
+        </div>
+
         <input type="hidden" id="profile-id" value="" />
-        <!-- Tab section ends here -->
-    </div>
 
-    <div class="two wide column"></div>
+    </div>
 
 </div>
 
@@ -776,9 +793,7 @@
                 </script>
             </div>
         </div>
-        <h4 class="ui header ">
-            Contact Details
-        </h4>
+
         <div class="ui tiny form">
             <div class="field">
                 <div class="ui input left icon fluid">
@@ -818,38 +833,35 @@
     </div>
 </template>
 <template id="role-template">
-    <div class="ui fluid card profile-card-style">
-        <div class="ui left floated compact segment">
-            <div class="ui toggle checkbox">
-                <input type="checkbox" id="donor" value="donor">
-                <label> <i class="heart orange icon"></i> Donor</label>
-            </div>
+    <div class="ui segment">
+        <div class="ui toggle checkbox">
+            <input type="checkbox" id="donor" value="donor">
+            <label> <i class="heart orange icon"></i> Donor</label>
         </div>
-        <div class="ui left floated compact segment">
-            <div class="ui toggle checkbox">
-                <input type="checkbox" id="donee" value="donee">
-                <label><i class="star teal icon"></i> Donee</label>
-            </div>
+    </div>
+    <div class="ui segment">
+        <div class="ui toggle checkbox">
+            <input type="checkbox" id="donee" value="donee">
+            <label><i class="star teal icon"></i> Donee</label>
         </div>
-        <div class="ui left floated compact segment">
-            <div class="ui toggle checkbox">
-                <input type="checkbox" id="volunteer" value="volunteer">
-                <label><i class="user blue icon"></i> Volunteer</label>
-            </div>
+    </div>
+    <div class="ui segment">
+        <div class="ui toggle checkbox">
+            <input type="checkbox" id="volunteer" value="volunteer">
+            <label><i class="user blue icon"></i> Volunteer</label>
         </div>
-        <div class="ui left floated compact segment">
-            <div class="ui toggle checkbox">
-                <input type="checkbox" id="organization" value="oranization">
-                <label><i class="building green icon"></i> Donee Organization</label>
-            </div>
+    </div>
+    <div class="ui segment">
+        <div class="ui toggle checkbox">
+            <input type="checkbox" id="organization" value="oranization">
+            <label><i class="building green icon"></i> Donee Organization</label>
         </div>
-        <div class="ui left floated compact segment">
-            <div class="ui toggle checkbox">
-                <input type="checkbox" id="corporate" value="corporate">
-                <label><i class="globe pink icon"></i> Corporate Donor</label>
-            </div>
+    </div>
+    <div class="ui segment">
+        <div class="ui toggle checkbox">
+            <input type="checkbox" id="corporate" value="corporate">
+            <label><i class="globe pink icon"></i> Corporate Donor</label>
         </div>
-        <br>
     </div>
 </template>
 </div>
@@ -858,9 +870,19 @@
 <script type="text/javascript">
     $(function () {
         $("#title-text").html("Profile");
+        $("#voldetails").hide()
         let TABLE_NAME = "user_profile";
         var myProfile = [];
         let myRole = []
+        $("#voldetails").hide()
+        $('#volunteer').change(function () {
+            debug('checkinf', $("#volunteer")[0].checked)
+            if ($("#volunteer")[0].checked === true) {
+                $("#voldetails").show()
+            } else {
+                $("#voldetails").hide()
+            }
+        });
         $('.vertical .item').tab();
         async function getData() {
             if (App.User) {
@@ -947,28 +969,75 @@
                 });
             });
         }
+
+        //change current user password
+        $("#profile-change-password-button").on('click', async function (e) {
+            $(this).addClass('loading');
+
+            const profile_new_password = $("#newpassword").val();
+            const profile_confirm_password = $("#confirmpassword").val();
+
+            let profile_pwd_status = true;
+            if (profile_new_password.length < 6) {
+                profile_pwd_status = false;
+                toastr["error"]("Password must be min 6 char", "Error");
+            } else if (!profile_new_password) {
+                profile_pwd_status = false;
+                toastr["error"]("Enter new password", "Error");
+            } else if (profile_confirm_password != profile_new_password) {
+                profile_pwd_status = false;
+                toastr["error"]("Password mismatch", "Error");
+            }
+
+            if (profile_pwd_status) {
+                var currentUser = App.auth.currentUser;
+
+                await currentUser.updatePassword(profile_new_password).then(function () {
+                    toastr["success"]("Password reset successful", "success");
+                }).catch(function (error) {
+                    toastr["error"]("Failed to reset password" + error.message, "error");
+                });
+
+                $("#newpassword").val("");
+                $("#confirmpassword").val("");
+            }
+            $(this).removeClass('loading');
+            e.stopImmediatePropagation();
+        });
+
         let selectedRole = [];
 
         $("#create-item-button").click(function (e) {
 
+            selectedRole = [
+                $("#donor:checked").val(),
+                $("#donee:checked").val(),
+                $("#volunteer:checked").val(),
+                $("#organization:checked").val(),
+                $("#corporate:checked").val()
+            ]
+
             if ($("#donor:checked").val() !== undefined) {
-                selectedRole.push($("#donor:checked").val())
                 App.Events.emit("donor-logged-screen");
             }
+
             if ($("#donee:checked").val() !== undefined) {
-                selectedRole.push($("#donee:checked").val())
                 App.Events.emit("donee-logged-screen");
             }
+
+            if ($("#volunteer:checked").val() !== undefined) {
+                App.Events.emit("volunteer-logged-screen");
+            } else {
+                App.Events.emit("volunteer-logged-out-screen");
+            }
+
             if ($("#donor:checked").val() !== undefined && $("#donee:checked").val() !== undefined) {
                 App.Events.emit("both-logged-screen");
             }
-            if ($("#volunteer:checked").val() !== undefined) selectedRole.push($("#volunteer:checked")
-                .val())
-            if ($("#organization:checked").val() !== undefined) selectedRole.push($(
-                "#organization:checked").val())
-            if ($("#corporate:checked").val() !== undefined) selectedRole.push($("#corporate:checked")
-                .val())
 
+            var newRoles = _.remove(selectedRole, function (role) {
+                return role;
+            });
 
             let userData = {
                 first_name: $("#first-name").val(),
@@ -983,8 +1052,9 @@
                 facebook: $("#facebook").val(),
                 twitter: $("#twitter").val(),
                 website: $("#website").val(),
-                role: selectedRole
+                role: newRoles
             }
+            newRoles = null;
             if (App.db.collection(TABLE_NAME).where('user_id', '==', App.User.uid)) {
                 updateEntry(TABLE_NAME, App.User.record_id, userData);
                 toastr["success"]("Updated profile successfully", "Success");
