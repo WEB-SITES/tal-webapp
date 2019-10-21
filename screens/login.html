@@ -101,13 +101,13 @@
                         <div class="field">
                             <div class="ui left icon input">
                                 <i class="user icon"></i>
-                                <input type="text" id="email" placeholder="E-mail address">
+                                <input type="text" id="login-email" placeholder="E-mail address">
                             </div>
                         </div>
                         <div class="field">
                             <div class="ui left icon input">
                                 <i class="lock icon"></i>
-                                <input type="password" id="password" placeholder="Password">
+                                <input type="password" id="login-password" placeholder="Password">
                             </div>
                         </div>
                         <div id="login-button" class="ui fluid medium blue submit button">Login</div>
@@ -209,13 +209,13 @@
     }
 
     function handleLogin() {
-        $("#login-button").click(function(e) {
+        $("#login-button").click(function (e) {
             $(this).addClass('loading');
             e.preventDefault();
-            var email = $("#email").val();
-            var password = $("#password").val();
+            var email = $("#login-email").val();
+            var password = $("#login-password").val();
             App.auth.signInWithEmailAndPassword(email, password)
-                .catch(function(err) {
+                .catch(function (err) {
                     $("#login-button").removeClass('loading');
                     toastr["error"]("Invalid credentails. Please try again.", "Error");
                 });
@@ -225,7 +225,7 @@
     }
 
     function handleSignUp() {
-        $("#signup-button").click(function(e) {
+        $("#signup-button").click(function (e) {
             e.preventDefault();
             $(this).addClass('loading');
             var new_user = objectifyForm($("form").serializeArray());
@@ -244,28 +244,34 @@
                 // debug(new_user);
 
                 App.auth.createUserWithEmailAndPassword(new_user.email, new_user.password).then(
-                    function(user) {
-                        //App.User = user;
-                        debug(" signup call back ===> " + user.user.uid);
-                        createEntry("user_profile", {
-                            user_id: user.user.uid,
-                            first_name: new_user.firstname,
-                            last_name: new_user.lastname,
-                            email: new_user.email,
-                            role: ['donor', 'donee'],
-                            profile_complete: 0,
-                            account_status: 'active'
+                    async function (user) {
+                            //App.User = user;
+                            debug(" signup call back ===> " + user.user.uid);
+                            createEntry("user_profile", {
+                                user_id: user.user.uid,
+                                first_name: new_user.firstname,
+                                last_name: new_user.lastname,
+                                email: new_user.email,
+                                role: ['donor', 'donee'],
+                                profile_complete: 0,
+                                account_status: 'in-active',
+                                account_verified: false
+                            });
+
+                            await sendFirebaseEmailVerificationLink(new_user.email);
+                            toastr["success"]("Account created successfully.", "Success");
+                            App.auth.signOut();
+                            showPage('#/logout');
+                            // $("#user-name-in-header").html("Welcome " + new_user.firstname)
+                            // App.Events.emit("user-logged-in", user);
+                        },
+                        function (error) {
+                            // Handle Errors here.
+                            var errorCode = error.code;
+                            var errorMessage = error.message;
+                            $("#signup-button").removeClass('loading');
+                            toastr["error"]("Error creating account.\n" + error.message, "Error");
                         });
-                        $("#user-name-in-header").html("Welcome " + new_user.firstname)
-                        App.Events.emit("user-logged-in", user);
-                    },
-                    function(error) {
-                        // Handle Errors here.
-                        var errorCode = error.code;
-                        var errorMessage = error.message;
-                        $("#signup-button").removeClass('loading');
-                        toastr["error"]("Error creating account.\n" + error.message, "Error");
-                    });
 
             } else {
                 $("#signup-button").removeClass('loading');
@@ -275,7 +281,7 @@
         });
     }
 
-    $(function() {
+    $(function () {
         $(".close").hide();
 
         function showLogin() {
@@ -288,11 +294,11 @@
             $("#login-panel").hide();
         }
 
-        $("#show-login-button").click(function() {
+        $("#show-login-button").click(function () {
             showLogin();
         });
 
-        $("#show-sign-up-button").click(function() {
+        $("#show-sign-up-button").click(function () {
             showSignup();
         });
 

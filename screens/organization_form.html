@@ -2,7 +2,7 @@
 
 </style>
 <div class="screen-wrapper" style="padding-right:10px;margin-top:20px;">
-    <div class="ui two column stackable grid middle aligned container">
+    <div class="ui two column stackable grid middle aligned container remove-on-mobile">
         <div class="column">
             <h4 class="ui header ui blue">
                 <i class="tasks teal icon"></i>
@@ -18,10 +18,9 @@
             </div>
         </div>
     </div>
-    <div class="ui divider"></div>
+    <div class="ui divider remove-on-mobile"></div>
     <br>
-    <div class="ui container global-modal-content"
-        style="width: 65%; margin: 0 auto; border: 1px solid #e5e5e5; padding: 15px;">
+    <div class="ui container animated fadeInUp faster">
         <!-- <h3 class="ui teal header center aligned">
             Organization
             <div class="sub header">Enter Organization details and click save.</div>
@@ -33,12 +32,14 @@
 
             </div>
             <div class="actions" style="height: 30px">
-                <div class="ui">
-                    <button class="ui tiny button blue right floated" id="organization-save-button">Save</button>
-                    <div class="ui tiny button red right floated" id="organization-delete-button">
+                <div style="text-align: center;;">
+                    <button class="ui tiny button blue " id="organization-save-button">Save</button>
+                    <div class="ui tiny button red " id="organization-delete-button">
                         Delete</div>
-                    <div class="ui tiny cancel button orange right floated" id="organization-cancel-button">
+                    <div class="ui tiny cancel button orange " id="organization-cancel-button">
                         Cancel</div>
+                    <div class="ui tiny button teal " id="organization-add-member-button">
+                        Add Members</div>
                     <br />
                 </div>
             </div>
@@ -91,6 +92,15 @@
 
 <script type="text/javascript">
     $(function () {
+
+
+        if (App.isMobile || isSmallScreen()) {
+            $("#title-text").html("Organizations");
+            $(".remove-on-mobile").remove();
+            $("#right-plus-button").hide();
+            $("#right-plus-button").attr("data-button-context", "");
+        }
+
         let TABLE_NAME = "organizations";
         let all_organizations = [];
         $("#organization-delete-button").hide();
@@ -100,7 +110,6 @@
             // Custom function to validate the EIN number
             $("#organization-ein").on("blur", function () {
                 const einValue = $(this).val();
-                debug("Checking EIN details.. ", einValue);
 
                 var orgData = null;
                 const fs_checking_org_data = App.db.collection(TABLE_NAME).where('ein', '==', einValue)
@@ -109,12 +118,12 @@
                             orgData = documentSnapshot.data();
                         });
 
-                        // console.log('info data', status, orgData)
-                        debug('orgdata ---> ', orgData)
                         if (orgData === null) {
                             // $("#ein-error-message").html("Proceed to save");
+                            $("#organization-save-button").removeAttr('disabled');
                             $(".ein-error-message").remove();
                         } else {
+                            $("#organization-save-button").attr('disabled', true);
                             $("#ein-field").addClass('error')
                             $("#ein-field").append(
                                 "<div class='ui basic red pointing prompt label transition visible ein-error-message'>EIN already exists</div>"
@@ -158,18 +167,16 @@
                     ein: {
                         identifier: 'organization-ein',
                         rules: [{
-                                type: 'empty',
-                                prompt: function (value) {
-                                    if (!value) {
-                                        return "Please enter EIN";
-                                    }
+                            type: 'empty',
+                            prompt: function (value) {
+                                if (!value) {
+                                    return "Please enter EIN";
                                 }
-                            },
-                            {
-                                type: 'regExp[/^\\d{2}\\-?\\d{7}$/]',
-                                prompt: "Format must be 12-1234567"
                             }
-                        ]
+                        }, {
+                            type: 'regExp[/^\\d{2}\\-?\\d{7}$/]',
+                            prompt: "Format must be 12-1234567"
+                        }]
                     },
                     description: {
                         identifier: 'description',
@@ -230,8 +237,7 @@
             } else {
                 App.Utils.loadTemplateToHolder(
                     "#org-template",
-                    "#org-information-holder",
-                    []
+                    "#org-information-holder", []
                 );
             }
             $("#organization-loader").hide();
@@ -260,5 +266,15 @@
             showPage("#/organizations");
             e.stopImmediatePropagation();
         });
+
+        $("body").on("click", "#organization-add-member-button", function (e) {
+            App.FullScreen.show("screens/organizations.html");
+            $(".fullscreen-close").show();
+            e.stopImmediatePropagation();
+        });
+
+
+
+
     });
 </script>

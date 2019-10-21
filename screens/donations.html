@@ -54,88 +54,103 @@
 
 <template id="donations-item-list-template">
     {{#items}}
-    <div class="column">
-        <div class="ui fluid card request-card-style">
+        <div class="column">
+            <div class="ui fluid card request-card-style">
 
-            <div class="image">
-                {{#image_url}}
-                <img src="{{image_url}}">
-                {{/image_url}}
-                {{^image_url}}
-                <img
-                    src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=450&q=80">
-                {{/image_url}}
-            </div>
+                <div class="image">
+                    {{#image_url}}
+                        <img src="{{image_url}}">
+                    {{/image_url}}
+                    {{^image_url}}
+                        <img
+                            src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=450&q=80">
+                    {{/image_url}}
+                </div>
 
-            <div class="content">
+                <div class="content">
 
-                <div class="header">
-                    {{ title }}
-                </div>
-                <div class="title">
-                    {{category}}
-                </div>
-                <div class="meta">
-                    {{days_ago}}
-                </div>
-                <div class="description">
-                    {{ description }}
-                    <div class="ui divider"></div>
-                    <div class="ui indicating progress request-progress-status" data-value="{{ donated_amount }}"
-                        data-total="{{ requested_amount }}" style="border-radius: 0 !important;">
-                        <div class="bar">
-                            <div class="progress"></div>
-                        </div>
-                        <div class="label"></div>
+                    <div class="header">
+                        {{ title }}
                     </div>
-                    <div class="ui divider"></div>
-                    <div style="text-align: center;margin: auto;" class="content-donate-button-block">
-                        <div class="ui tiny center aligned inverted blue button donate-data-item-button rounded-button"
-                            data-item-id="{{ id }}">Donate Now
+                    <div class="title">
+                        {{category}}
+                    </div>
+                    <div class="meta">
+                        {{days_ago}}
+                    </div>
+                    <div class="description">
+
+                        <p class="ellipsis">
+                            {{ description }}
+                        </p>
+
+                        <!-- <div class="ui divider"></div> -->
+                        <br>
+                        <div class="ui indicating progress request-progress-status" data-value="{{ donated_amount }}"
+                            data-total="{{ requested_amount }}" style="border-radius: 0 !important;">
+                            <div class="bar">
+                                <div class="progress"></div>
+                            </div>
+                            <div class="label"></div>
+                        </div>
+
+                        <div style="text-align: center;margin: auto;margin:15px 0px;;"
+                            class="content-donate-button-block">
+                            <div class="ui tiny center aligned inverted blue button donate-data-item-button rounded-button"
+                                data-item-id="{{ id }}">Donate Now
+                            </div>
                         </div>
                     </div>
-
                 </div>
-            </div>
 
+                <div class="extra content">
+                    <span class="right floated share-news" data-link-share="{{feedlink}}">
+                        <i class="share green icon"></i>share</span>
 
-            <!-- <div class="content">
+                    <span class="left floated">
+                        <i class="heart outline red icon fav-donation" data-item-id="{{id}}"></i>Save</span>
+
+                    <div style="text-align:center">
+                        <i class="chat message outline icon blue" data-item-id="{{id}}"></i>Comment</div>
+                </div>
+
+                <!-- <div class="content">
                 <span class="ui blue right ribbon label">$5000.00</span>
             </div> -->
 
-            <!-- <span class="right floated star edit-button">
+                <!-- <span class="right floated star edit-button">
                     <i class="edit icon"></i>
                     Donate Now
                 </span> -->
+            </div>
         </div>
-    </div>
     {{/items}}
 </template>
 
 <template id="my-donations-item-list-template">
     {{#items}}
-    <div class="column">
-        <div class="ui fluid card request-card-style">
-            <div class="content">
-                <!-- <span class="ui mini blue tag label right floated">$5000.00</span> -->
-                <div class="header">
-                    {{user_name}} Donated ${{donated_amount}} for {{category}}
+        <div class="column">
+            <div class="ui fluid card request-card-style">
+                <div class="content">
+                    <!-- <span class="ui mini blue tag label right floated">$5000.00</span> -->
+                    <div class="header">
+                        {{user_name}} Donated ${{donated_amount}} for {{category}}
+                    </div>
+                    <div class="description">
+                        {{donation_notes}}
+                    </div>
+                    <div class="meta">
+                        {{days_ago}}
+                    </div>
+                    <div class="description">
+                        {{ description }}
+                    </div>
                 </div>
-                <div class="description">
-                    {{donation_notes}}
-                </div>
-                <div class="meta">
-                    {{days_ago}}
-                </div>
-                <div class="description">
-                    {{ description }}
-                </div>
-            </div>
-            <div class="image">
+                <div class="image">
 
+                </div>
             </div>
         </div>
-    </div>
     {{/items}}
 </template>
 
@@ -274,6 +289,11 @@
             App.donation_request_id = id;
             showPage("#/request_form");
         });
+
+        $("body").on("click", ".fav-donation", function () {
+            let id = $(this).attr("data-item-id");
+        });
+
 
         // Show items on first run
         renderItems()

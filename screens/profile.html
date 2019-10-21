@@ -5,11 +5,13 @@
         box-shadow: none !important;
         /* border: 1px solid #dcdcdc !important; */
     }
+    
+    @media only screen and (min-width: 768px) {}
 </style>
 
-<div class="screen-wrapper" style="padding-right:10px;margin-top:20px;">
+<div class="screen-wrapper" style="padding:10px;;margin-top:20px;">
 
-    <div class="ui two column stackable grid middle aligned container">
+    <div class="ui two column stackable grid middle aligned container remove-on-mobile">
         <div class="column">
             <h4 class="ui header ui blue">
 
@@ -25,13 +27,10 @@
         </div>
     </div>
 
-    <div class="ui divider"></div>
+    <div class="ui divider remove-on-mobile"></div>
     <br>
 
     <div class="ui container ui three column  doubling stackable masonry grid">
-
-
-
         <div class="column">
             <div class="ui fluid card">
                 <div class="content">
@@ -64,8 +63,7 @@
                         <div class="ui dimmer" id="profile-dimmer">
                             <div class="ui indeterminate text loader">Preparing Files</div>
                         </div>
-                        <img src="https://semantic-ui.com/images/wireframe/image.png" alt="" id="user-profile-image"
-                            class="ui image small centered" style="margin-bottom: 20px;">
+                        <img src="https://semantic-ui.com/images/wireframe/image.png" alt="" id="user-profile-image" class="ui image small centered" style="margin-bottom: 20px;">
                         <div>
                             <input type="file" class="inputfile" id="profile-image-upload-button" />
                             <label for="profile-image-upload-button" class="ui small teal button">
@@ -174,6 +172,11 @@
 
     </div>
 
+
+    <div id="mobile-profile-button-holder" class="ui basic segment center aligned">
+
+    </div>
+
 </div>
 
 
@@ -204,6 +207,7 @@
         </div>
     </div>
 </template>
+
 <template id="contact-template">
     <div class="ui tiny form">
         <div class="field">
@@ -810,6 +814,7 @@
         </div>
     </div>
 </template>
+
 <template id="social-template">
     <div class="ui tiny form">
         <div class="field">
@@ -832,6 +837,7 @@
         </div>
     </div>
 </template>
+
 <template id="role-template">
     <div class="ui segment">
         <div class="ui toggle checkbox">
@@ -864,18 +870,37 @@
         </div>
     </div>
 </template>
-</div>
+
+<template id="profile-action-button">
+    <div class="ui tiny button orange" style="border-radius: 15px;" id="create-item-button">
+        <i class="edit icon"></i> Update Profile</div>
+</template>
+
+
 
 
 <script type="text/javascript">
-    $(function () {
-        $("#title-text").html("Profile");
+    $(function() {
+
+        if (App.isMobile || isSmallScreen()) {
+            $("#title-text").html("Profile");
+            $(".remove-on-mobile").remove();
+            $("#right-plus-button").hide();
+            $("#right-plus-button").attr("data-button-context", "");
+
+            App.Utils.loadTemplateToHolder(
+                "#profile-action-button",
+                "#mobile-profile-button-holder", {}
+            );
+
+        }
+
         $("#voldetails").hide()
         let TABLE_NAME = "user_profile";
         var myProfile = [];
         let myRole = []
         $("#voldetails").hide()
-        $('#volunteer').change(function () {
+        $('#volunteer').change(function() {
             debug('checkinf', $("#volunteer")[0].checked)
             if ($("#volunteer")[0].checked === true) {
                 $("#voldetails").show()
@@ -887,7 +912,7 @@
         async function getData() {
             if (App.User) {
                 await App.db.collection(TABLE_NAME).where('user_id', '==', App.User.uid)
-                    .get().then(function (querySnapshot) {
+                    .get().then(function(querySnapshot) {
                         myProfile = querySnapshot.docs[0].data();
                         App.Utils.loadTemplateToHolder(
                             "#personal-template",
@@ -942,7 +967,7 @@
 
         function handleFileUpload() {
             var fileObject;
-            $("#profile-image-upload-button").on('change', function (e) {
+            $("#profile-image-upload-button").on('change', function(e) {
 
                 $("#profile-dimmer").addClass("active");
 
@@ -958,7 +983,7 @@
                     debug("Error ... ");
                 }, function complete() {
                     // Upload completed successfully, now we can get the download URL
-                    uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+                    uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
                         updateEntry(TABLE_NAME, App.User.record_id, {
                             profile_image_url: downloadURL
                         });
@@ -971,7 +996,7 @@
         }
 
         //change current user password
-        $("#profile-change-password-button").on('click', async function (e) {
+        $("#profile-change-password-button").on('click', async function(e) {
             $(this).addClass('loading');
 
             const profile_new_password = $("#newpassword").val();
@@ -992,9 +1017,9 @@
             if (profile_pwd_status) {
                 var currentUser = App.auth.currentUser;
 
-                await currentUser.updatePassword(profile_new_password).then(function () {
+                await currentUser.updatePassword(profile_new_password).then(function() {
                     toastr["success"]("Password reset successful", "success");
-                }).catch(function (error) {
+                }).catch(function(error) {
                     toastr["error"]("Failed to reset password" + error.message, "error");
                 });
 
@@ -1007,7 +1032,7 @@
 
         let selectedRole = [];
 
-        $("#create-item-button").click(function (e) {
+        $("#create-item-button").click(function(e) {
 
             selectedRole = [
                 $("#donor:checked").val(),
@@ -1035,7 +1060,7 @@
                 App.Events.emit("both-logged-screen");
             }
 
-            var newRoles = _.remove(selectedRole, function (role) {
+            var newRoles = _.remove(selectedRole, function(role) {
                 return role;
             });
 

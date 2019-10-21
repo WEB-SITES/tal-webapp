@@ -2,9 +2,17 @@
     .organization-row-item {
         cursor: pointer;
     }
+
+    .org-card-style {
+        margin: 30px 0px !important;
+        margin-left: 5px !important;
+        border-radius: 8px !important;
+        box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.12) !important;
+        cursor: pointer;
+    }
 </style>
 
-<div class="screen-wrapper" style="padding-right:10px;margin-top:20px;">
+<div class="screen-wrapper" style="margin-top:20px;padding-right:10px;">
 
     <div class="ui two column stackable grid middle aligned container remove-on-mobile" id="admin-block">
         <div class="column">
@@ -49,6 +57,7 @@
         <div class="ui basic segment" id="organization-item-list-table-holder">
             <div class="ui active centered inline loader"></div>
         </div>
+        <br>
     </div>
 </div>
 
@@ -74,23 +83,51 @@
 </template>
 
 <template id="organization-item-list-mobile-ui-template">
-    <div class="ui segments raised">
-        {{#items}}
-        <div class="ui segment organization-row-item" data-organization-id={{id}}>
-            <span class="ui label right ribbon">{{org_type}}</span>
-            <div style="margin-top:-25px;">
-                <h5 class="ui header">
-                    {{name}}
-                    <div class="sub header">{{days_ago}}</div>
-                </h5>
+    {{#items}}
+        <div class="ui fluid card org-card-style organization-row-item" data-organization-id={{id}}>
+            <div class="content">
+                <div class="right floated ui left pointing label">{{org_type}}</div>
+                <div class="header">
+                    {{ name }}
+                </div>
+                <div class="meta">
+                    {{days_ago}}
+                </div>
+                <div class="ui divider"></div>
+                <div class="description">
+                    {{ description }}
+                </div>
+                <div class="description">
+                    <br>
+                    <a class="ui basic label" style="border:none">
+                        <i class="map marker alternate  icon"></i>
+                        {{address}}
+                    </a>
+                    <br>
+                    <a class="ui label basic" style="border:none">
+                        <i class="phone icon"></i>
+                        {{phone}}
+                    </a>
+                </div>
+            </div>
+
+            <div class="extra content">
+                <span class="left floated">
+                    <i class="left floated id badge outline icon"></i>
+                    {{ ein }}
+                </span>
+                <span class="right floated star" data-item-id="{{ id }}">
+                    <i class="edit icon"></i>
+                    Edit
+                </span>
             </div>
         </div>
-        {{/items}}
-    </div>
+    {{/items}}
+
 </template>
 
 <script type="text/javascript">
-    $(function() {
+    $(function () {
 
         if (App.isMobile || isSmallScreen()) {
             $("#title-text").html("Organizations");
@@ -109,34 +146,11 @@
             isAdmin = false;
             $("#non-admin-block").show();
             $("#admin-block").remove();
-            $("#create-my-organization-button").click(function(e) {
+            $("#create-my-organization-button").click(function (e) {
                 resetOrganizationForm();
                 $("#organization-item-edit-modal").modal("show");
                 //$("body").removeClass('dimmable').css('height', 'auto');
             });
-        }
-
-        function refreshTableView() {
-            var options = {
-                dom: '<"ui input"f><"ui segment"t><"right-aligned-panel"p>',
-                language: {
-                    //search : "<i class='fa fa-search'></i>",
-                    //info : "_TOTAL_ entries to show (_START_ to _END_)",
-                    info: "",
-                    paginate: {
-                        first: "first",
-                        previous: "<i class='fa fa-chevron-left'></i>",
-                        next: "<i class='fa fa-chevron-right'></i>",
-                        last: "last"
-                    }
-                }
-            };
-            $("#organization-list-table").DataTable();
-            $(".dataTables_filter input").css("border", "none");
-            $(".dataTables_filter input").css("border-bottom", "1px dotted silver");
-            //$(".dataTables_filter input").css("border-radius","15px");
-            $(".dataTables_filter input").css("padding", "8px");
-            $(".dataTables_filter input").css("text-align", "center");
         }
 
         // Update UI to show the list
@@ -159,33 +173,35 @@
                     App.organizations.push(one_item);
                 });
 
-                if (isSmallScreen()) { // Mobile list view
-                    App.Utils.loadTemplateToHolder(
-                        "#organization-item-list-mobile-ui-template",
-                        "#organization-item-list-table-holder", {
+
+                App.Utils.loadTemplateToHolder(
+                    "#organization-item-list-mobile-ui-template",
+                    "#organization-item-list-table-holder", {
                         items: App.organizations
                     }
-                    );
-                } else { // Web UI table view
-                    App.Utils.loadTemplateToHolder(
-                        "#organization-item-list-table-template",
-                        "#organization-item-list-table-holder", {
-                        items: App.organizations
-                    }
-                    );
-                    refreshTableView();
-                }
+                );
+
 
             });
         }
 
-        $(".create-organization-button").click(function(e) {
+
+        // Right button on mobile mapped to new entry
+        App.Events.listen("add-button-clicked", function () {
+            let btn_context = $("#right-plus-button").attr("data-button-context");
+            if (btn_context && btn_context == "new-user-org") {
+                App.organization_id = undefined;
+                window.location.href = "#/organization_form";
+            }
+        });
+
+        $(".create-organization-button").click(function (e) {
             App.organization_id = undefined;
             window.location.href = "#/organization_form";
             e.stopImmediatePropagation();
         });
 
-        $("body").on("click", ".organization-row-item", function(e) {
+        $("body").on("click", ".organization-row-item", function (e) {
             let id = $(this).attr("data-organization-id");
             App.organization_id = id;
             showPage("#/organization_form");

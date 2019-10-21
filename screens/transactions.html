@@ -83,7 +83,8 @@
                 <br />
                 <div class="ui form" id="review-users-approve-form">
                     <div class="field">
-                        <textarea rows="2" id="review-users-approve-comment" name="description" placeholder="Enter your comments"></textarea>
+                        <textarea rows="2" id="review-users-approve-comment" name="description"
+                            placeholder="Enter your comments"></textarea>
                     </div>
                 </div>
             </div>
@@ -100,7 +101,8 @@
                 <br />
                 <div class="ui form" id="review-users-deny-form">
                     <div class="field">
-                        <textarea rows="2" id="review-users-deny-comment" name="description" placeholder="Enter your comments"></textarea>
+                        <textarea rows="2" id="review-users-deny-comment" name="description"
+                            placeholder="Enter your comments"></textarea>
                     </div>
                 </div>
             </div>
@@ -109,45 +111,45 @@
             </div>
         </div>
         <template id="review-users-item-list-table-template">
-      <table id="review-users-list-table" class="ui small table selectable teal celled" width="100%">
-        <thead>
-          <tr>
-            <th>Txn ID</th>
-            <th>Name</th>
-            <th>Amount ($)</th>
-            <th>Created Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- {{#items}} -->
-          <tr class="review-users-row-item" data-review-user-row-id={{id}}>
-            <td>{{paymentID}}</td>
-            <td>{{user_name}}</td>
-            <td>{{amount}}</td>
-            <td>{{days_ago}}</td>
-          </tr>
-          <!-- {{/items}} -->
-        </tbody>
-      </table>
-    </template>
+            <table id="review-users-list-table" class="ui small table selectable teal celled" width="100%">
+                <thead>
+                    <tr>
+                        <th>Txn ID</th>
+                        <th>Name</th>
+                        <th>Amount ($)</th>
+                        <th>Created Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- {{#items}} -->
+                    <tr class="review-users-row-item" data-review-user-row-id={{id}}>
+                        <td>{{paymentID}}</td>
+                        <td>{{user_name}}</td>
+                        <td>{{amount}}</td>
+                        <td>{{days_ago}}</td>
+                    </tr>
+                    <!-- {{/items}} -->
+                </tbody>
+            </table>
+        </template>
     </div>
 </div>
 <script type="text/javascript">
     App.TemplateController = {
         data: [],
-        handleActions: function(action) {
+        handleActions: function (action) {
             alert("Fired");
         },
-        bindListener: function() {
+        bindListener: function () {
             App.Events.listen("SEARCH_ACTIONS", this.handleActions);
         },
-        render: function() {
+        render: function () {
             var screen = App.Screens.get("screens/search.html");
             $("#stage").html(screen);
         }
     };
 
-    $(function() {
+    $(function () {
         let TABLE_NAME = "transactions";
         let all_users = [];
         const current_user_roles = get_current_user_roles();
@@ -202,7 +204,9 @@
                     var one_item = change.doc.data();
                     var dt = parseInt(one_item.created_at);
                     one_item.days_ago = moment(dt).fromNow();
-                    one_item.user_name = one_item.user_info && (one_item.user_info.first_name + ' ' + one_item
+                    one_item.amount = formatAmount(one_item.amount);
+                    one_item.user_name = one_item.user_info && (one_item.user_info.first_name +
+                        ' ' + one_item
                         .user_info.last_name);
                     all_users.push(one_item);
                 });

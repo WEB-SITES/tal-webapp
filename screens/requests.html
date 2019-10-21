@@ -3,7 +3,7 @@
     .edit-button {
         cursor: pointer;
     }
-
+    
     .request-card-style {
         /* background: #fafafa !important;
         box-shadow: none !important;
@@ -71,8 +71,7 @@
                 <div class="field">
                     <div class="ui left icon input">
                         <i class="calendar outline icon green"></i>
-                        <input type="date" id="event-start-date" name="startDate"
-                            placeholder="Start Date as mm/dd/yyyy" />
+                        <input type="date" id="event-start-date" name="startDate" placeholder="Start Date as mm/dd/yyyy" />
                     </div>
                 </div>
                 <div class="field">
@@ -84,8 +83,7 @@
             </div>
 
             <div class="field">
-                <textarea rows="2" id="event-description" name="description"
-                    placeholder="Enter event description"></textarea>
+                <textarea rows="2" id="event-description" name="description" placeholder="Enter event description"></textarea>
             </div>
 
             <div class="field">
@@ -166,6 +164,7 @@
 
 <script type="text/javascript">
     $(function() {
+
         if (App.isMobile) {
             $("#title-text").html("Requests");
             $(".remove-on-mobile").remove();
@@ -214,8 +213,8 @@
                 App.Utils.loadTemplateToHolder(
                     "#requests-item-list-template",
                     "#requests-item-list-screen-holder", {
-                    items: App.donation_requests
-                }
+                        items: App.donation_requests
+                    }
                 );
 
                 //progress status for each request

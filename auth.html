@@ -1,0 +1,145 @@
+<html>
+
+<head>
+    <!-- <meta name="viewport" content="initial-scale=1.0, user-scalable=no"> -->
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link rel="stylesheet" href="libs/semantic.min.css" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700,900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/dataTables.semanticui.min.css" />
+    <title>Touch-A-Life - Verify Email</title>
+</head>
+
+<body>
+    <div class="ui content" style="position: absolute; top: 40%; width: 100%; text-align: center;">
+        <h1 class="ui header orange" id="status-message">Verifying please wait...</h1>
+    </div>
+    <!-- standard js and css files -->
+    <script src="libs/jquery.min.js"></script>
+    <script src="libs/semantic.min.js"></script>
+    <script src="libs/path.min.js"></script>
+    <script src="libs/mustache.min.js"></script>
+    <script src="libs/nprogress.min.js"></script>
+    <script src="libs/lodash.min.js"></script>
+    <script src="libs/moment.min.js"></script>
+    <!-- <script src="libs/fastclick.min.js"></script>
+    <script src="libs/tabletop.min.js"></script> -->
+
+    <script src="https://www.gstatic.com/firebasejs/6.5.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.5.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.5.0/firebase-firestore.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet"
+        type="text/css" />
+    <script src="https://code.jquery.com/jquery-2.1.4.js"></script>
+    <script
+        src="https://cdn.rawgit.com/mdehoog/Semantic-UI/6e6d051d47b598ebab05857545f242caf2b4b48c/dist/semantic.min.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/6.5.0/firebase-storage.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-fullscreen-plugin/1.1.4/jquery.fullscreen-min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" type="text/javascript"></script>
+    <!-- Datatables related libs -->
+    <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.15/js/dataTables.semanticui.min.js"></script>
+
+    <!-- App js and css files -->
+    <!-- <script src="js/sidenav.min.js"></script> -->
+    <script src="js/app.js" type="text/javascript"></script>
+    <script src="js/routes.js" type="text/javascript"></script>
+    <script src="js/datasource.js" type="text/javascript"></script>
+    <script>
+        async function getUserInfoByEmail(emailAddr) {
+            let userData = false;
+            await App.db.collection('user_profile').where('email', '==', emailAddr).get()
+                .then(
+                    snapshot => {
+                        snapshot.docs.map(function (documentSnapshot) {
+                            const uInfo = documentSnapshot.data();
+                            userData = {
+                                ...uInfo,
+                                uuid: documentSnapshot.id
+                            }
+                        });
+                    });
+            return userData;
+        }
+
+        async function activateAccount(uid) {
+            await App.db.collection('user_profile').doc(uid).update({
+                account_status: 'active',
+                account_verified: true
+            });
+
+            return {
+                statusCode: 1,
+                message: 'Account activated'
+            }
+        }
+
+        async function handleVerifyEmail(auth, actionCode, continueUrl, lang) {
+            var msg = null
+            var code = 0
+
+            try {
+                await auth.applyActionCode(actionCode).then(async function (respVer) {
+                    //activate user account
+                    const strSplit = continueUrl.split('=')
+                    const uEmail = strSplit[1]
+                    const getInfo = await getUserInfoByEmail(uEmail)
+
+                    let actResp = {
+                        statusCode: 0,
+                        message: 'Account not activated'
+                    }
+                    if (typeof (getInfo.uuid) != undefined) {
+                        actResp = await activateAccount(getInfo.uuid)
+                    }
+                    code = actResp.statusCode
+                    msg = actResp.message
+                }).catch(function (error) {
+                    msg = error.message
+                })
+            } catch (e) {
+                msg = e.message
+            }
+            return {
+                statusCode: code,
+                message: msg
+            }
+        }
+
+        async function authenticateRequest() {
+            const auth = firebase.auth()
+            const reqParams = new URLSearchParams(window.location.search);
+            const mode = reqParams.get('mode') || null
+            const actionCode = reqParams.get('oobCode') || null
+            const continueUrl = reqParams.get('continueUrl') || null
+            const lang = reqParams.lang || null
+            // check for valid parameters and send request to server
+            if (mode === 'verifyEmail') {
+                const verifyResp = await handleVerifyEmail(auth, actionCode, continueUrl, lang);
+                const respData = verifyResp
+                if (respData.statusCode === 0 || respData.statusCode === 'undefined') {
+                    $("#status-message").removeClass('orange').addClass('red');
+                    $("#status-message").html("Error. Failed to authenticate.");
+                } else if (respData.statusCode === 1) {
+                    $("#status-message").removeClass('orange').addClass('green');
+                    $("#status-message").html("Account verified successfully");
+                } else {
+                    $("#status-message").removeClass('orange').addClass('red');
+                    $("#status-message").html("Unknown error");
+                }
+            } else {
+                $("#status-message").removeClass('orange').addClass('red');
+                $("#status-message").html("Error. Invalid request.");
+            }
+        }
+
+        authenticateRequest();
+    </script>
+</body>
+
+</html>

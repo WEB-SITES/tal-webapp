@@ -4,19 +4,20 @@
         margin: auto !important;
         border: 1px solid silver;
     }
-
+    
     .ui.form .field>.uploads {
         display: inline-block;
     }
 </style>
 
 <div class="screen-wrapper" style="padding-right:10px;margin-top:20px;">
+
     <div class="ui two column stackable grid middle aligned container remove-on-mobile">
         <div class="column">
             <h4 class="ui header ui blue">
                 <i class="tasks teal icon"></i>
                 <div class="content">
-                    <span class="create-req">Create Request</span>
+                    <span class="create-req">New Request</span>
                     <div class="sub header">Enter request details</div>
                 </div>
             </h4>
@@ -25,36 +26,35 @@
     </div>
     <div class="ui divider remove-on-mobile"></div>
 
-    <div class="ui container">
+    <div class="ui container animated fadeInUp faster">
         <div class="ui center aligned middle aligned basic segment request_form_segment">
             <form class="event-request-form">
                 <div class="ui form" id="" style="background:#f5f5f5;padding:20px;">
                     <div class="field">
                         <div class="ui input left icon">
                             <i class="edit blue icon"></i>
-                            <input type="text" id="title" name="req-title"
-                                placeholder="Enter title for your requirement" />
+                            <input type="text" id="title" name="req-title" placeholder="Enter title for your requirement" />
                         </div>
                     </div>
 
                     <div class="field">
-                        <textarea rows="2" id="event-description" name="req-description"
-                            placeholder="Enter organization description"></textarea>
+                        <textarea rows="2" id="event-description" name="req-description" placeholder="Enter organization description"></textarea>
                     </div>
 
                     <div class="field" id="request-form-organization-row-field">
                         <select class="ui dropdown organization" name="organization" id="organization">
-                            <option value="">Select organization</option>
+                            <option value="">Individual Donee</option>
                         </select>
                     </div>
 
                     <div class="field">
-                        <select class="ui dropdown category" name="category" id="category">
+                        <select class="ui dropdown category" name="main-category" id="category">
                             <option value="">Select category</option>
                             <option value="Homeless">Homeless</option>
                             <!-- <option value="Medical">Medical</option>
                             <option value="Education">Education</option> -->
-                            <option value="vol_services">Volunteer Services</option>
+                            <option value="Volunteer Services">Volunteer Services</option>
+                            <option value="Shopping url">Shopping url</option>
                         </select>
                     </div>
                     <div class="three fields" id="type-homeless">
@@ -71,9 +71,9 @@
                                 <option value="Money">Money Donation</option>
                             </select>
                         </div>
-                        <div class="field">
+                        <div class="field not-shoes category-cont" id="category-cont">
                             <select class="ui dropdown category-size" name="cat_size" id="cat-size">
-                                <option value="">Select category size</option>
+                                <option value="">Select size</option>
                                 <option value="XS">XS (Extra Small)</option>
                                 <option value="S">S (Small)</option>
                                 <option value="M">M (Medium)</option>
@@ -81,8 +81,44 @@
                                 <option value="XL">XL (Extra Large)</option>
                             </select>
                         </div>
+                        <div class="field shoes-size category-cont" id="category-cont">
+                            <select class="ui dropdown category-size" name="cat_size" id="cat-shoe-size">
+                                <option value="">Select size</option>
+                                <option value="4">4</option>
+                                <option value="4.5">4.5</option>
+                                <option value="5">5</option>
+                                <option value="5.5">5.5</option>
+                                <option value="6">6</option>
+                                <option value="6.5">6.5</option>
+                                <option value="7">7</option>
+                                <option value="7.5">7.5</option>
+                                <option value="8">8</option>
+                                <option value="8.5">8.5</option>
+                                <option value="9">9</option>
+                                <option value="9.5">9.5</option>
+                                <option value="10">10</option>
+                                <option value="10.5">10.5</option>
+                                <option value="11">11</option>
+                                <option value="11.5">11.5</option>
+                                <option value="12">12</option>
+                                <option value="12.5">12.5</option>
+                                <option value="13">13</option>
+                                <option value="13.5">13.5</option>
+                                <option value="14">14</option>
+                            </select>
+                        </div>
+                        <div class="ui field right labeled input">
+                            <input type="text" id="cat-quantity" name="category-quantity" placeholder="Enter Quantity" />
+                            <div class="ui basic label">x 35</div>
+                        </div>
+                    </div>
+
+                    <div class="two fields" id="type-shopping">
                         <div class="field">
-                            <input type="text" id="cat-quantity" name="quantity" placeholder="Enter Quantity" />
+                            <input type="text" id="shoppingurl" name="shoppingUrl" placeholder="Enter shopping url" />
+                        </div>
+                        <div class="field">
+                            <input type="text" id="shopping-cat-quantity" name="category-quantity" placeholder="Enter Quantity" />
                         </div>
                     </div>
 
@@ -98,6 +134,27 @@
                             <div class="ui input left icon fluid">
                                 <i class="dollar sign icon"></i>
                                 <input type="text" id="education-amount" placeholder="Enter required amount">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="three fields" id="type-volunteer">
+                        <div class="ui calendar field" id="type-volunteer-start-date">
+                            <div class="ui input left icon" id="volunteer-calendar">
+                                <i class="calendar icon"></i>
+                                <input type="text" placeholder="Select your start date" id="volunteer-start-time">
+                            </div>
+                        </div>
+                        <div class="ui calendar field" id="type-volunteer-end-date">
+                            <div class="ui input left icon" id="volunteer-calendar">
+                                <i class="calendar icon"></i>
+                                <input type="text" placeholder="Select your end date" id="volunteer-end-time">
+                            </div>
+                        </div>
+                        <div class="ui calendar field" id="type-volunteer-hours">
+                            <div class="ui input left icon" id="volunteer-calendar">
+                                <i class="calendar icon"></i>
+                                <input type="text" placeholder="Appx hours" id="volunteer-hours">
                             </div>
                         </div>
                     </div>
@@ -143,8 +200,7 @@
                     </div>
 
                     <div class="field">
-                        <textarea rows="2" id="specialreq" name="specialreq"
-                            placeholder="Special request (if any)"></textarea>
+                        <textarea rows="2" id="specialreq" name="specialreq" placeholder="Special request (if any). Any specific requirement like amazon, ebay links or any brand information"></textarea>
                     </div>
 
                     <div class="center aligned field">
@@ -161,9 +217,11 @@
 </div>
 
 <script type="text/javascript">
-    $(function () {
+    $(function() {
+        $('#type-volunteer-start-date').calendar();
+        $('#type-volunteer-end-date').calendar();
 
-        if (isMobileDevice || isSmallScreen()) {
+        if (App.isMobile || isSmallScreen()) {
             $("#title-text").html("Requests");
             $(".remove-on-mobile").remove();
             $("#right-plus-button").hide();
@@ -173,6 +231,9 @@
         $("#type-homeless").hide();
         $("#type-education").hide();
         $("#type-medical").hide();
+        $(".shoes-size").hide();
+        $("#type-volunteer").hide();
+        $("#type-shopping").hide();
 
         function resetRequestsForm() {
             // reset form
@@ -181,7 +242,7 @@
         }
 
         var fileObject;
-        $("#image-upload-button").on('change', function (e) {
+        $("#image-upload-button").on('change', function(e) {
 
             $("#image-dimmer").addClass("active");
 
@@ -196,7 +257,7 @@
                 debug("Error ... ");
             }, function complete() {
                 // Upload completed successfully, now we can get the download URL
-                uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+                uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
 
                     $("#image-hidden").val(downloadURL)
                     $("#image-dimmer").removeClass("active");
@@ -205,7 +266,7 @@
         });
 
         var docObject;
-        $("#document-upload-button").on('change', function (e) {
+        $("#document-upload-button").on('change', function(e) {
 
             $("#document-dimmer").addClass("active");
 
@@ -220,7 +281,7 @@
                 debug("Error ... ");
             }, function complete() {
                 // Upload completed successfully, now we can get the download URL
-                uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+                uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
 
                     $("#doc-hidden").val(downloadURL);
                     $("#document-dimmer").removeClass("active");
@@ -248,39 +309,40 @@
                         }]
                     },
                     category: {
-                        identifier: 'category',
+                        identifier: 'main-category',
                         rules: [{
                             type: 'empty',
                             prompt: 'Please select category'
                         }]
                     },
-                    cat_type: {
-                        identifier: 'cat_type',
-                        rules: [{
-                            type: 'empty',
-                            prompt: 'Please select category type'
-                        }]
-                    },
-                    cat_size: {
-                        identifier: 'cat_size',
-                        rules: [{
-                            type: 'empty',
-                            prompt: 'Please select category type'
-                        }]
-                    },
-                    quantity: {
-                        identifier: 'quantity',
-                        rules: [{
-                            type: 'empty',
-                            prompt: 'Please enter quantity'
-                        }]
-                    },
+                    // cat_type: {
+                    //     identifier: 'cat_type',
+                    //     rules: [{
+                    //         type: 'empty',
+                    //         prompt: 'Please select category type'
+                    //     }]
+                    // },
+                    // cat_size: {
+                    //     identifier: 'cat_size',
+                    //     rules: [{
+                    //         type: 'empty',
+                    //         prompt: 'Please select category type'
+                    //     }]
+                    // },
+                    // quantity: {
+                    //     identifier: 'category-quantity',
+                    //     rules: [{
+                    //         type: 'empty',
+                    //         prompt: 'Please enter quantity'
+                    //     }]
+                    // },
                 },
-                onSuccess: function (event, fields) {
+                onSuccess: function(event, fields) {
                     submitRequestsForm();
+                    event.stopImmediatePropagation();
                     return false;
                 },
-                onFailure: function (event, fields) {
+                onFailure: function(event, fields) {
                     return false;
                 }
             });
@@ -297,6 +359,7 @@
             id: App.donation_request_id
         });
 
+
         if (selected_donation_request) {
             edit_mode = true;
             $(".create-req").html('Edit Request');
@@ -310,9 +373,32 @@
                 $("#type-homeless").show()
                 $("#type-education").hide()
                 $("#type-medical").hide()
+                $("#type-volunteer").hide();
+                if ($('#cat-type option:selected').text() === 'Shoes') {
+                    $(".not-shoes").hide();
+                    $(".shoes-size").show();
+                } else {
+                    $(".not-shoes").show();
+                    $(".shoes-size").hide();
+                }
                 $('#cat-type').val(selected_donation_request.category_type).attr('selected', 'selected');
                 $('#cat-size').val(selected_donation_request.category_size).attr('selected', 'selected');
-                $("#cat-quantity").val(selected_donation_request.category_qty)
+                $('#cat-shoe-size').val(selected_donation_request.category_shoe_size).attr('selected',
+                    'selected');
+                $("#cat-quantity").val(selected_donation_request.category_qty && selected_donation_request
+                    .category_qty)
+                $("#shopping-cat-quantity").val(selected_donation_request.category_qty &&
+                    selected_donation_request
+                    .category_qty)
+            }
+            if ($('#category option:selected').text() === 'Volunteer Services') {
+                $("#type-homeless").hide()
+                $("#type-education").hide()
+                $("#type-medical").hide()
+                $("#type-volunteer").show();
+                $("#volunteer-start-time").val(selected_donation_request.volunteer_start_time)
+                $("#volunteer-end-time").val(selected_donation_request.volunteer_end_time)
+                $("#volunteer-hours").val(selected_donation_request.volunteer_hours)
             }
             if ($('#category option:selected').text() === 'Education') {
                 $("#type-homeless").hide()
@@ -330,11 +416,20 @@
             }
         }
 
-        $("#category").change(function () {
+        $("#category").change(function() {
             if ($('#category option:selected').val() === 'Homeless') {
                 $("#type-homeless").show()
                 $("#type-education").hide()
                 $("#type-medical").hide()
+                $("#type-volunteer").hide();
+                $("#type-shopping").hide();
+                if ($('#cat-type option:selected').text() === 'Shoes') {
+                    $(".not-shoes").hide();
+                    $(".shoes-size").show();
+                } else {
+                    $(".not-shoes").show();
+                    $(".shoes-size").hide();
+                }
             } else if ($('#category option:selected').val() === 'Education') {
                 $("#type-education").show()
                 $("#type-homeless").hide()
@@ -343,11 +438,38 @@
                 $("#type-education").hide()
                 $("#type-homeless").hide()
                 $("#type-medical").show()
+            } else if ($('#category option:selected').text() === 'Volunteer Services') {
+                $("#type-homeless").hide()
+                $("#type-education").hide()
+                $("#type-medical").hide()
+                $("#type-volunteer").show();
+                $("#type-shopping").hide();
+            } else if ($('#category option:selected').text() === 'Shopping url') {
+                $("#type-homeless").hide()
+                $("#type-education").hide()
+                $("#type-medical").hide()
+                $("#type-volunteer").hide();
+                $("#type-shopping").show();
             }
         });
 
-        $("#request-save-button").click(function (e) {
-            enableRequestFormValidations()
+        $("#cat-type").change(function() {
+            if (($('#cat-type option:selected').text() === 'Books') || ($('#cat-type option:selected')
+                    .text() === 'Money Donation')) {
+                $(".category-cont").hide()
+            } else if ($('#cat-type option:selected').text() === 'Shoes') {
+                $(".not-shoes").hide();
+                $(".shoes-size").show();
+            } else {
+                $(".not-shoes").show();
+                $(".shoes-size").hide();
+                $(".category-shoe-cont").hide()
+            }
+        })
+
+        $("#request-save-button").click(function(e) {
+            enableRequestFormValidations();
+            e.stopImmediatePropagation();
         })
 
         function submitRequestsForm() {
@@ -357,9 +479,15 @@
                     description: $("#event-description").val(),
                     category: $('#category option:selected').val(),
                     category_size: $('#cat-size option:selected').val(),
+                    category_shoe_size: $('#cat-shoe-size option:selected').val(),
                     category_qty: $('#cat-quantity').val(),
+                    shopping_qty: $("#shopping-cat-quantity").val(),
                     special_request: $('#specialreq').val(),
-                    organization_id: $('#organization option:selected').val()
+                    volunteer_start_time: $('#volunteer-start-time').val(),
+                    volunteer_end_time: $('#volunteer-end-time').val(),
+                    volunteer_appx_hours: $('#volunteer-hours').val(),
+                    organization_id: $('#organization option:selected').val(),
+                    shopping_url: $('#shoppingurl').val(),
                 }
 
                 if ($("#image-hidden").val() !== "") {
@@ -370,7 +498,6 @@
                     updateObjEntry.document_url = $("#doc-hidden").val();
                 }
 
-                debug("info", updateObjEntry.category, $('#category option:selected').val());
                 if (updateObjEntry.category === 'Education') {
                     updateObjEntry.category_type = $('#edu-type option:selected').val();
                     updateObjEntry.requested_amount = $("#education-amount").val();
@@ -379,7 +506,11 @@
                     updateObjEntry.requested_amount = $("#medical-amount").val();
                 } else if (updateObjEntry.category === 'Homeless') {
                     updateObjEntry.category_type = $('#cat-type option:selected').val();
-                    updateObjEntry.requested_amount = $('#cat-quantity').val() * 35;
+                    if (updateObjEntry.category_type === 'Shopping url') {
+                        updateObjEntry.requested_amount = $('#shopping-cat-quantity').val();
+                    } else {
+                        updateObjEntry.requested_amount = $('#cat-quantity').val() * 35;
+                    }
                 }
 
                 debug("Updating", updateObjEntry);
@@ -391,7 +522,12 @@
                     description: $("#event-description").val(),
                     category: $('#category option:selected').val(),
                     category_size: $('#cat-size option:selected').val(),
+                    category_shoe_size: $('#cat-shoe-size option:selected').val(),
+                    volunteer_start_time: $('#volunteer-start-time').val(),
+                    volunteer_end_time: $('#volunteer-end-time').val(),
+                    volunteer_hours: $('#volunteer-hours').val(),
                     category_qty: $('#cat-quantity').val(),
+                    shopping_qty: $("#shopping-cat-quantity").val(),
                     education_type: $("#edu-type option:selected").val(),
                     medical_type: $("#medicals option:selected").val(),
                     special_request: $('#specialreq').val(),
@@ -399,7 +535,8 @@
                     document_url: $("#doc-hidden").val(),
                     image_url: $("#image-hidden").val(),
                     status: 'in process',
-                    organization_id: $('#organization option:selected').val()
+                    organization_id: $('#organization option:selected').val(),
+                    shopping_url: $('#shoppingurl').val(),
                 }
                 if (createRequestObj.category === 'Education') {
                     createRequestObj.category_type = $('#edu-type option:selected').val();
@@ -409,7 +546,11 @@
                     createRequestObj.requested_amount = $("#medical-amount").val();
                 } else if (createRequestObj.category === 'Homeless') {
                     createRequestObj.category_type = $('#cat-type option:selected').val();
-                    createRequestObj.requested_amount = $('#cat-quantity').val() * 35;
+                    if (createRequestObj.category_type === 'Shopping url') {
+                        createRequestObj.requested_amount = $('#shopping-cat-quantity').val();
+                    } else {
+                        createRequestObj.requested_amount = $('#cat-quantity').val() * 35;
+                    }
                 }
                 debug("Creating", createRequestObj);
                 createEntry(TABLE_NAME, createRequestObj);
@@ -423,8 +564,9 @@
         async function getUserOrganizationDDL() {
             const orgDDL = [];
             var orgDDLOptions =
-                '<select class="ui dropdown organization" name="organization" id="organization"><option value>Select organization</option>';
-            await App.db.collection('organizations').where('user_id', '==', App && App.User && App.User.uid).get()
+                '<select class="ui dropdown organization" name="organization" id="organization"><option value>Individual Donee</option>';
+            await App.db.collection('organizations').where('user_id', '==', App && App.User && App.User.uid)
+                .get()
                 .then((snapshot) => {
                     let changes = snapshot.docChanges();
                     changes.forEach(change => {
@@ -444,11 +586,11 @@
         }
         getUserOrganizationDDL();
 
-        $("#request-cancel-button").click(function (e) {
+        $("#request-cancel-button").click(function(e) {
             showPage("#/requests");
         });
 
-        $("#request-delete-button").click(function (e) {
+        $("#request-delete-button").click(function(e) {
             if (edit_mode) {
                 deleteEntry(TABLE_NAME, selected_donation_request.id);
                 toastr["success"]("Deleted request successfully", "Success");

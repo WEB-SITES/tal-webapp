@@ -214,6 +214,13 @@ function isSmallScreen() {
     return (window.innerWidth < 700)
 }
 
+function formatAmount(amt) {
+    if (amt)
+        return ("$" + parseFloat(amt).toFixed(2));
+    else
+        return "$0.00";
+}
+
 // return current user Roles
 function get_current_user_roles() {
 
