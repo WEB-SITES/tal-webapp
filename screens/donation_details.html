@@ -26,9 +26,10 @@
         border-radius: 5px;
     }
     
-    .shopping-url-link a {
+    .shopping-url-link .shop-link {
         display: block;
         padding: 8px;
+        cursor: pointer;
     }
     
     .tal-address {
@@ -40,11 +41,11 @@
         line-height: 1.8em;
     }
     /* @media only screen and (min-width: 768px) {
-        .donation-form {
-            margin-left: 150px !important;
-            margin: auto;
-        }
-    } */
+            .donation-form {
+                margin-left: 150px !important;
+                margin: auto;
+            }
+        } */
 </style>
 
 <div class="screen-wrapper" style="padding-right:10px;margin-top:20px;padding-bottom:50px;margin-bottom:30px;">
@@ -106,7 +107,7 @@
                     <div class="ui fluid form" id="amount-form">
                         <div class="field" id="request-form-organization-row-field">
                             <label>Select Representation Organization</label>
-                            <select class="ui dropdown organization" name="organization" id="organization">
+                            <select class="ui dropdown organization" name="organization" id="donor-organization-id">
                                 <option value="">Individual Donor</option>
                             </select>
                         </div>
@@ -131,22 +132,23 @@
                         <div class="field shopping">
                             <label for="shoppingUrl">Shopping Url</label>
                             <div class="shopping-url-link">
-                                <a id="donee-shopping-url" target="blank">Click here to take to shoping link</a>
+                                <div class="shop-link" id="donee-shopping-url" target="blank">Click here to take to shoping link</a>
+                                </div>
                             </div>
-                        </div>
-                        <div class="field shopping">
-                            <label for="address">Tal Address</label>
-                            <div class="tal-address">
-                                Touch-A-Life Foundation <br> 4701 Patrick Henry Drive, #20 <br> Santa Clara, CA 95054
+                            <div class="field shopping">
+                                <label for="address">Shipping Address</label>
+                                <div class="tal-address">
+                                    Touch-A-Life Foundation <br> 4701 Patrick Henry Drive, #20 <br> Santa Clara, CA 95054
+                                </div>
                             </div>
-                        </div>
-                        <div class="field shopping">
-                            <label for="address">Tracking Id</label>
-                            <input type="text" id="tracking-id" name="trackingId" placeholder="Enter tracking id">
-                        </div>
-                        <div class="field">
-                            <label style="width: 30%">Notes</label>
-                            <textarea rows="2" id="description" name="description" placeholder="Enter comments (if any)"></textarea>
+                            <div class="field shopping">
+                                <label for="address">Tracking Id</label>
+                                <input type="text" id="tracking-id" name="trackingId" placeholder="Enter tracking id">
+                            </div>
+                            <div class="field">
+                                <label style="width: 30%">Notes</label>
+                                <textarea rows="2" id="description" name="description" placeholder="Enter comments (if any)"></textarea>
+                            </div>
                         </div>
                         <div class="ui basic center aligned segment">
                             <button class="ui bottom attached button green fluid not-shopping" id="btn-process-paypal">
@@ -156,127 +158,135 @@
                                 Update with tracking details
                             </button>
                         </div>
-
-                    </div>
                 </form>
+                </div>
             </div>
         </div>
+        <br>
+        <br>
+        <br>
     </div>
-    <br>
-    <br>
-    <br>
-</div>
 
-<script type="text/javascript">
-    $(function() {
+    <script type="text/javascript">
+        $(function() {
 
-        if (App.isMobile || isSmallScreen()) {
-            $("#title-text").html("Donate");
-            $(".remove-on-mobile").remove();
-            $("#right-plus-button").hide();
-            $("#right-plus-button").attr("data-button-context", "");
-        }
-
-        var selected_donation_request = _.find(App.donation_requests, {
-            id: App.donation_request_id
-        });
-
-        if (selected_donation_request.category === 'Shopping url') {
-            $(".not-shopping").hide();
-            $("#btn-process-paypal").hide();
-        } else {
-            $(".shopping").hide();
-            $(".address-field").hide();
-        }
-
-        async function getUserOrganizationDDL() {
-            const orgDDL = [];
-            var orgDDLOptions =
-                '<label>Select Representation Organization</label><select class="ui dropdown organization" name="organization" id="organization"><option value>Individual Donor</option>';
-            await App.db.collection('organizations').where('user_id', '==', App && App.User && App.User.uid)
-                .get()
-                .then((snapshot) => {
-                    let changes = snapshot.docChanges();
-                    changes.forEach(change => {
-                        const org_item = change.doc.data();
-                        let org_selected = '';
-                        orgDDLOptions = orgDDLOptions + "<option value='" + change.doc.id +
-                            "' " + org_selected + ">" + org_item.name + "</option>";
-                    });
-                })
-                .catch();
-            orgDDLOptions = orgDDLOptions + "</select>"
-            $("#request-form-organization-row-field").html(orgDDLOptions);
-        }
-
-        getUserOrganizationDDL();
-        if (selected_donation_request) {
-            $("#donee-title").text(selected_donation_request.title)
-            $("#donee-category-type").html(selected_donation_request.category)
-            $("#days-ago").html(selected_donation_request.days_ago)
-            $("#donation-image").attr("src", selected_donation_request.image_url)
-            $("#donee-description").text(selected_donation_request.description)
-            $("#donee-shopping-url").attr("href", selected_donation_request.shopping_url)
-            $("#donation-display").text(formatAmount(selected_donation_request.requested_amount));
-            if (selected_donation_request.category === 'Homeless') {
-                $("#amount-section").hide()
-                $("#req-amt").hide()
-                $("#donee-cat-type").text(selected_donation_request.category_type)
-                $("#donee-cat-qty").text(selected_donation_request.category_qty && selected_donation_request
-                    .category_qty)
-            } else {
-                $("#donee-amount").text(selected_donation_request.requested_amount)
-                $("#req-cat").hide()
-                $("#category-section").hide()
-                $("#donation_qty").hide()
+            if (App.isMobile || isSmallScreen()) {
+                $("#title-text").html("Donate");
+                $(".remove-on-mobile").remove();
+                $("#right-plus-button").hide();
+                $("#right-plus-button").attr("data-button-context", "");
             }
-        }
 
-        function enableMakeDonationFormValidation() {
-            // $.fn.form.settings.rules.lessThan = function(inputValue, validationValue) {
-            //     return inputValue < validationValue;
-            // }
-            $('.make-donation-form').form({
-                on: 'blur',
-                inline: true,
-                fields: {
-                    donation_qty: {
-                        identifier: 'donation_qty',
-                        rules: [{
-                            type: 'empty',
-                            prompt: 'Enter value'
-                        }]
-                    },
-                    donation_amount: {
-                        identifier: 'donation_amount',
-                        rules: [{
-                            type: 'empty',
-                            prompt: 'Enter value'
-                        }]
-                    },
-                    description: {
-                        identifier: 'description',
-                        rules: [{
-                            type: 'empty',
-                            prompt: 'Enter value'
-                        }]
-                    }
-                },
-                onSuccess: function(event, fields) {
-                    event.preventDefault();
-                    debug("Update UI to show PP payments");
-                    //return false;
-                },
-                onFailure: function(event, fields) {
-                    return false;
-                }
+            $(".not-shopping").show();
+            var selected_donation_request = _.find(App.donation_requests, {
+                id: App.donation_request_id
             });
-        }
-        enableMakeDonationFormValidation();
+
+            if (selected_donation_request.category === 'Shopping url') {
+                $(".not-shopping").hide();
+                $("#btn-process-paypal").hide();
+            } else {
+                $(".shopping").hide();
+                $(".not-shopping").show();
+                $(".address-field").hide();
+            }
+
+            $("#save-tracking-details").click(function(e) {
+                alert($("#tracking-id").val())
+            })
+
+            $("#donee-shopping-url").click(function(e) {
+                window.open(selected_donation_request.shopping_url);
+            })
+
+            async function getUserOrganizationDDL() {
+                const orgDDL = [];
+                var orgDDLOptions =
+                    '<label>Select Representation Organization</label><select class="ui dropdown organization" name="organization" id="donor-organization-id"><option value>Individual Donor</option>';
+                await App.db.collection('organizations').where('user_id', '==', App && App.User && App.User.uid)
+                    .get()
+                    .then((snapshot) => {
+                        let changes = snapshot.docChanges();
+                        changes.forEach(change => {
+                            const org_item = change.doc.data();
+                            let org_selected = '';
+                            orgDDLOptions = orgDDLOptions + "<option value='" + change.doc.id +
+                                "' " + org_selected + ">" + org_item.name + "</option>";
+                        });
+                    })
+                    .catch();
+                orgDDLOptions = orgDDLOptions + "</select>"
+                $("#request-form-organization-row-field").html(orgDDLOptions);
+            }
+
+            getUserOrganizationDDL();
+            if (selected_donation_request) {
+                $("#donee-title").text(selected_donation_request.title)
+                $("#donee-category-type").html(selected_donation_request.category)
+                $("#days-ago").html(selected_donation_request.days_ago)
+                $("#donation-image").attr("src", selected_donation_request.image_url)
+                $("#donee-description").text(selected_donation_request.description)
+                    // $("#donee-shopping-url").text(selected_donation_request.shopping_url)
+                $("#donation-display").text(formatAmount(selected_donation_request.requested_amount));
+                if (selected_donation_request.category === 'Homeless') {
+                    $("#amount-section").hide()
+                    $("#req-amt").hide()
+                    $("#donee-cat-type").text(selected_donation_request.category_type)
+                    $("#donee-cat-qty").text(selected_donation_request.category_qty && selected_donation_request
+                        .category_qty)
+                } else {
+                    $("#donee-amount").text(selected_donation_request.requested_amount)
+                    $("#req-cat").hide()
+                    $("#category-section").hide()
+                    $("#donation_qty").hide()
+                }
+            }
+
+            function enableMakeDonationFormValidation() {
+                // $.fn.form.settings.rules.lessThan = function(inputValue, validationValue) {
+                //     return inputValue < validationValue;
+                // }
+                $('.make-donation-form').form({
+                    on: 'blur',
+                    inline: true,
+                    fields: {
+                        donation_qty: {
+                            identifier: 'donation_qty',
+                            rules: [{
+                                type: 'empty',
+                                prompt: 'Enter value'
+                            }]
+                        },
+                        donation_amount: {
+                            identifier: 'donation_amount',
+                            rules: [{
+                                type: 'empty',
+                                prompt: 'Enter value'
+                            }]
+                        },
+                        description: {
+                            identifier: 'description',
+                            rules: [{
+                                type: 'empty',
+                                prompt: 'Enter value'
+                            }]
+                        }
+                    },
+                    onSuccess: function(event, fields) {
+                        event.preventDefault();
+                        debug("Update UI to show PP payments");
+                        //return false;
+                    },
+                    onFailure: function(event, fields) {
+                        return false;
+                    }
+                });
+            }
+            enableMakeDonationFormValidation();
 
 
-        $("#btn-process-paypal").click(function(e) {
-            var one_donation = {
+            $("#btn-process-paypal").click(function(e) {
+                var one_donation = {
                     qty: $("#don-qty").val() == undefined ? 1 : $("#don-qty").val(),
                     price: $("#don-amt").val(),
                     notes: $('#description').val(),
@@ -284,25 +294,22 @@
                     donor_org_id: $("#donor-organization-id option:selected").val(),
                     user_id: App.User.uid
                 }
-                //var pay_url = "payment.html?" + jQuery.param(one_donation);
-            var pay_url = "https://srikanthnandiraju.github.io/appstore/touchalife/donate.html?" +
-                jQuery.param(one_donation);
-            console.log(pay_url);
-            window.open(pay_url, "_system");
+                var pay_url = "payment.html?" + jQuery.param(one_donation);
+                var pay_url = "https://web-sites.github.io/tal-webapp/payment.html?" +
+                    jQuery.param(one_donation);
+                window.open(pay_url, "_system");
 
+                // pay_url = "http://127.0.0.1:50953/payment.html?" + jQuery.param(one_donation);
+                // window.open(pay_url, "_system");
+            });
 
-            // pay_url = "http://127.0.0.1:52096/payment.html" +
-            //     jQuery.param(one_donation);
-            // window.open(pay_url, "_system");
+            $("#don-qty").on("keyup", function(e) {
+                $("#btn-process-paypal").html("Donate $" + Number(35 * $(this).val()));
+            });
+
+            $("#don-amt").on("keyup", function(e) {
+                $("#btn-process-paypal").html("Donate $" + Number($(this).val()));
+            });
+
         });
-
-        $("#don-qty").on("keyup", function(e) {
-            $("#btn-process-paypal").html("Donate $" + Number(35 * $(this).val()));
-        });
-
-        $("#don-amt").on("keyup", function(e) {
-            $("#btn-process-paypal").html("Donate $" + Number($(this).val()));
-        });
-
-    });
-</script>
+    </script>

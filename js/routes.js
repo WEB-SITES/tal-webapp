@@ -47,6 +47,11 @@ Path.map("#/profile").to(function () {
     $("#stage").load("screens/profile.html");
 });
 
+Path.map("#/favourites").to(function () {
+    $("#stage").load("screens/favourites.html");
+});
+
+
 Path.map("#/transactions").to(function () {
     $("#stage").load("screens/transactions.html");
 });

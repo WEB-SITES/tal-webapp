@@ -104,25 +104,25 @@
                 </div>
 
                 <div class="extra content">
-                    <span class="right floated share-news" data-link-share="{{feedlink}}">
-                        <i class="share green icon"></i>share</span>
-
-                    <span class="left floated">
-                        <i class="heart outline red icon fav-donation" data-item-id="{{id}}"></i>Save</span>
-
-                    <div style="text-align:center">
-                        <i class="chat message outline icon blue" data-item-id="{{id}}"></i>Comment</div>
+                    <div class="ui heart rating fav-donation" data-item-id="{{id}}" data-max-rating="1" data-rating="0">
+                    </div>
+                    Fav
+                    <span class="right floated share-donation-link" data-share-donation-link="{{share_link}}">
+                        <i class="share teal icon"></i>share</span>
                 </div>
 
-                <!-- <div class="content">
+
+            </div>
+
+            <!-- <div class="content">
                 <span class="ui blue right ribbon label">$5000.00</span>
             </div> -->
 
-                <!-- <span class="right floated star edit-button">
+            <!-- <span class="right floated star edit-button">
                     <i class="edit icon"></i>
                     Donate Now
                 </span> -->
-            </div>
+        </div>
         </div>
     {{/items}}
 </template>
@@ -205,6 +205,9 @@
                     }
                 );
 
+                $(".rating").rating();
+                $(".rating").click(function () {});
+
                 //progress status for each request
                 $('.request-progress-status').progress({
                     text: {
@@ -260,6 +263,11 @@
                     }
                 );
 
+                // Enable rating click feature
+                $(".rating").rating();
+                $(".rating").click(function () {});
+
+
                 if (App.donations.length === 0) {
                     $(".no-data").show().html("No donations available")
                 }
@@ -290,8 +298,26 @@
             showPage("#/request_form");
         });
 
-        $("body").on("click", ".fav-donation", function () {
-            let id = $(this).attr("data-item-id");
+
+        // Logic to handle favourite donations
+        $("body").off('click', ".fav-donation").on("click", ".fav-donation", function (e) {
+            let selected_donation_id = $(this).attr("data-item-id");
+            var selected_donation_item = _.find(App.donation_requests, {
+                id: selected_donation_id
+            });
+
+            var saved_items = localStorage.getItem("saved_donation_items");
+            debug(" 1. first save " + saved_items);
+            if (saved_items && saved_items != undefined) {
+                saved_items = JSON.parse(saved_items);
+            } else {
+                saved_items = [];
+            }
+
+            saved_items.push(selected_donation_item);
+            localStorage.setItem("saved_donation_items", JSON.stringify(saved_items));
+            toastr["success"]("Donation saved successfully", "Success");
+            e.stopPropagation();
         });
 
 

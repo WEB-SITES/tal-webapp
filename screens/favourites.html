@@ -1,0 +1,167 @@
+<style>
+    .delete-button,
+    .edit-button {
+        cursor: pointer;
+    }
+
+    .request-card-style {
+        /* background: #fafafa !important;
+     box-shadow: none !important;
+     border: 1px solid #dcdcdc !important; */
+        margin: auto !important;
+        margin-left: 5px !important;
+        /* margin-bottom: 25px !important; */
+        border-radius: 8px !important;
+        box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.12) !important;
+        /* max-width: 400px !important; */
+        cursor: pointer;
+    }
+
+    .rounded-button {
+        border-radius: 15px !important;
+    }
+</style>
+
+<div class="screen-wrapper" style="padding-right:10px;margin-top:20px;">
+    <div class="ui two column stackable grid middle aligned container remove-on-mobile">
+        <div class="column">
+            <h4 class="ui header ui blue">
+                <i class="tasks teal icon"></i>
+                <div class="content">
+                    Donations
+                    <div class="sub header">favourites Donations</div>
+                </div>
+            </h4>
+        </div>
+        <div class="column right aligned">
+        </div>
+    </div>
+    <div class="ui divider remove-on-mobile"></div>
+    <br>
+    <h2 class="no-data" style="text-align:center; width: 100%"></h2>
+    <div class="ui three column container doubling stackable masonry grid" id="favourites-item-list-screen-holder">
+        <div class="ui active centered inline loader"></div>
+    </div>
+</div>
+
+<template id="favourites-item-list-template">
+    {{#items}}
+        <div class="column">
+            <div class="ui fluid card request-card-style">
+
+                <div class="image">
+                    {{#image_url}}
+                        <img src="{{image_url}}">
+                    {{/image_url}}
+                    {{^image_url}}
+                        <img
+                            src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=450&q=80">
+                    {{/image_url}}
+                </div>
+
+                <div class="content">
+
+                    <div class="header">
+                        {{ title }}
+                    </div>
+                    <div class="title">
+                        {{category}}
+                    </div>
+                    <div class="meta">
+                        {{days_ago}}
+                    </div>
+                    <div class="description">
+
+                        <p class="ellipsis">
+                            {{ description }}
+                        </p>
+
+                        <!-- <div class="ui divider"></div> -->
+                        <br>
+                        <div class="ui indicating progress request-progress-status" data-value="{{ donated_amount }}"
+                            data-total="{{ requested_amount }}" style="border-radius: 0 !important;">
+                            <div class="bar">
+                                <div class="progress"></div>
+                            </div>
+                            <div class="label"></div>
+                        </div>
+
+                        <div style="text-align: center;margin: auto;margin:15px 0px;;"
+                            class="content-donate-button-block">
+                            <div class="ui tiny center aligned inverted blue button donate-data-item-button rounded-button"
+                                data-item-id="{{ id }}">Donate Now
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="extra content">
+                    <span class="right floated share-donation-link" data-share-donation-link="{{share_link}}">
+                        <i class="share teal icon"></i>share</span>
+                </div>
+
+
+            </div>
+
+            <!-- <div class="content">
+                <span class="ui blue right ribbon label">$5000.00</span>
+            </div> -->
+
+            <!-- <span class="right floated star edit-button">
+                    <i class="edit icon"></i>
+                    Donate Now
+                </span> -->
+        </div>
+        </div>
+    {{/items}}
+</template>
+
+
+<script type="text/javascript">
+    $(function () {
+
+        if (App.isMobile) {
+            $("#title-text").html("Favourites");
+            $(".remove-on-mobile").remove();
+            $("#right-plus-button").hide();
+            $("#right-plus-button").attr("data-button-context", "");
+        }
+
+        function renderItems() {
+            var saved_items = localStorage.getItem("saved_donation_items");
+            if (saved_items && saved_items != undefined) {
+                saved_items = JSON.parse(saved_items);
+            } else {
+                saved_items = [];
+            }
+
+            debug("Favs " + saved_items);
+
+            App.Utils.loadTemplateToHolder(
+                "#favourites-item-list-template",
+                "#favourites-item-list-screen-holder", {
+                    items: saved_items
+                }
+            );
+
+            //progress status for each request
+            $('.request-progress-status').progress({
+                text: {
+                    active: '${value} of ${total} donated'
+                }
+            });
+
+        }
+
+
+        $("body").on("click", ".donate-data-item-button", function (e) {
+            let id = $(this).attr("data-item-id");
+            App.donation_request_id = id;
+            showPage("#/donation_details");
+            e.stopImmediatePropagation();
+        });
+
+        // Show items on first run
+        renderItems()
+    });
+</script>

@@ -34,7 +34,7 @@
             <div class="actions" style="height: 30px">
                 <div style="text-align: center;;">
                     <button class="ui tiny button blue " id="organization-save-button">Save</button>
-                    <div class="ui tiny button red " id="organization-delete-button">
+                    <div class="ui tiny button red" id="organization-delete-button">
                         Delete</div>
                     <div class="ui tiny cancel button orange " id="organization-cancel-button">
                         Cancel</div>
@@ -226,6 +226,7 @@
             });
 
             if (selected_organization) {
+                $("#organization-delete-button").show();
                 App.Utils.loadTemplateToHolder(
                     "#org-template",
                     "#org-information-holder", {

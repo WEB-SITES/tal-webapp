@@ -254,16 +254,16 @@
                                 email: new_user.email,
                                 role: ['donor', 'donee'],
                                 profile_complete: 0,
-                                account_status: 'in-active',
-                                account_verified: false
+                                account_status: 'active',
+                                account_verified: true
                             });
 
-                            await sendFirebaseEmailVerificationLink(new_user.email);
-                            toastr["success"]("Account created successfully.", "Success");
-                            App.auth.signOut();
-                            showPage('#/logout');
-                            // $("#user-name-in-header").html("Welcome " + new_user.firstname)
-                            // App.Events.emit("user-logged-in", user);
+                            // await sendFirebaseEmailVerificationLink(new_user.email);
+                            // toastr["success"]("Account created successfully.", "Success");
+                            // App.auth.signOut();
+                            // showPage('#/logout');
+                            $("#user-name-in-header").html("Welcome " + new_user.firstname)
+                            App.Events.emit("user-logged-in", user);
                         },
                         function (error) {
                             // Handle Errors here.
